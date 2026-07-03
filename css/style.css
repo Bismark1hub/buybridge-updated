@@ -1,0 +1,14 @@
+/* BuyBridge - Global Styles */
+/* We'll build this together step by step */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F8F9FA;
+  color: #202124;
+}
