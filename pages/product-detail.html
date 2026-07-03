@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iPhone 13 Pro - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="../index.html" class="back-btn">←</a>
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <div class="header-actions">
+        <a href="cart.html" class="cart-btn">
+          🛒
+          <span class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== PRODUCT DETAIL ==================== -->
+  <main class="main-content">
+
+    <!-- Product Image -->
+    <div class="detail-image">
+      <div class="image-placeholder large">📱</div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="detail-info">
+
+      <span class="tagline-subtle">Buy with confidence</span>
+
+      <h1 class="detail-name">iPhone 13 Pro - 256GB</h1>
+      <p class="detail-price">GHS 8,500</p>
+
+      <!-- Seller Row -->
+      <div class="detail-seller">
+        <div class="seller-avatar">🏪</div>
+        <div class="seller-info">
+          <span class="sold-by">Sold by</span>
+          <a href="seller-storefront.html" class="seller-name-link">TechHub Ghana</a>
+          <span class="seller-rating">⭐ 4.8 (120 reviews)</span>
+        </div>
+        <a href="seller-storefront.html" class="view-store-btn">View Store</a>
+      </div>
+
+      <!-- Description (Expandable) -->
+      <div class="detail-description">
+        <button class="description-toggle" onclick="toggleDescription()">
+          <h3>Description</h3>
+          <span class="toggle-arrow">▼</span>
+        </button>
+        <div class="description-content" id="descriptionContent">
+          <p>
+            Brand new iPhone 13 Pro with 256GB storage. 
+            Factory unlocked. Includes original charger and cable. 
+            1-year warranty. Color: Graphite.
+          </p>
+          <p>
+            📍 <strong>Pickup:</strong> Available in Accra, East Legon.
+          </p>
+          <p>
+            🚗 <strong>Delivery:</strong> Rider delivery available at buyer's cost.
+          </p>
+        </div>
+      </div>
+
+      <!-- Escrow Trust Badge -->
+      <div class="trust-badge">
+        <span class="trust-icon">🛡️</span>
+        <div>
+          <strong>Funds held securely in BuyBridge escrow</strong>
+          <p style="margin-top:4px;">Payment is only released to seller after you confirm delivery</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- More from this seller -->
+    <div class="section-header">
+      <h2 class="section-title">More from TechHub Ghana</h2>
+      <a href="seller-storefront.html" class="section-link">See All</a>
+    </div>
+    <div class="horizontal-scroll">
+      <a href="product-detail.html" class="mini-card">
+        <div class="mini-image"><div class="image-placeholder small">💻</div></div>
+        <p class="mini-name">MacBook Air M1</p>
+        <p class="mini-price">GHS 9,800</p>
+      </a>
+      <a href="product-detail.html" class="mini-card">
+        <div class="mini-image"><div class="image-placeholder small">🎧</div></div>
+        <p class="mini-name">AirPods Pro</p>
+        <p class="mini-price">GHS 1,500</p>
+      </a>
+      <a href="product-detail.html" class="mini-card">
+        <div class="mini-image"><div class="image-placeholder small">📱</div></div>
+        <p class="mini-name">iPhone 12</p>
+        <p class="mini-price">GHS 6,200</p>
+      </a>
+      <a href="product-detail.html" class="mini-card">
+        <div class="mini-image"><div class="image-placeholder small">⌚</div></div>
+        <p class="mini-name">Apple Watch SE</p>
+        <p class="mini-price">GHS 2,100</p>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ==================== BOTTOM ACTIONS ==================== -->
+  <div class="bottom-actions">
+    <div class="quantity-selector">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <span class="qty-number" id="qtyDisplay">1</span>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+    <a href="cart.html" class="btn-add-cart">Add to Cart</a>
+    <a href="checkout.html" class="btn-buy-now">Buy Now</a>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    let quantity = 1;
+    function changeQty(change) {
+      quantity = Math.max(1, quantity + change);
+      document.getElementById('qtyDisplay').textContent = quantity;
+    }
+
+    function toggleDescription() {
+      const content = document.getElementById('descriptionContent');
+      const arrow = document.querySelector('.toggle-arrow');
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        arrow.textContent = '▼';
+      } else {
+        content.style.display = 'none';
+        arrow.textContent = '▶';
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Dashboard - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <span class="header-title">Seller Dashboard</span>
+      <div class="header-actions">
+        <button class="notif-btn">🔔</button>
+        <button class="profile-btn">🏪</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== DASHBOARD CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Store Info -->
+    <div class="store-banner">
+      <div class="store-avatar-lg">🏪</div>
+      <div>
+        <h2 class="store-name-lg">TechHub Ghana</h2>
+        <span class="store-rating">⭐ 4.8 (120 reviews)</span>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">💰</span>
+        <span class="stat-value">GHS 45,200</span>
+        <span class="stat-label">Total Sales</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📦</span>
+        <span class="stat-value">48</span>
+        <span class="stat-label">Orders</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏷️</span>
+        <span class="stat-value">15</span>
+        <span class="stat-label">Products</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⏳</span>
+        <span class="stat-value">GHS 3,800</span>
+        <span class="stat-label">Pending Payout</span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs">
+      <button class="tab-btn active" onclick="switchTab('products')">Products</button>
+      <button class="tab-btn" onclick="switchTab('orders')">Orders</button>
+      <button class="tab-btn" onclick="switchTab('earnings')">Earnings</button>
+    </div>
+
+    <!-- ========== PRODUCTS TAB ========== -->
+    <div class="tab-content" id="productsTab">
+      <div class="product-list">
+
+        <div class="product-list-item">
+          <div class="product-list-image">
+            <div class="image-placeholder small">📱</div>
+          </div>
+          <div class="product-list-info">
+            <span class="product-list-name">iPhone 13 Pro - 256GB</span>
+            <span class="product-list-price">GHS 8,500</span>
+            <span class="product-list-stock">In Stock: 5</span>
+          </div>
+          <div class="product-list-actions">
+            <button class="action-btn edit">✏️</button>
+            <button class="action-btn delete">🗑️</button>
+          </div>
+        </div>
+
+        <div class="product-list-item">
+          <div class="product-list-image">
+            <div class="image-placeholder small">💻</div>
+          </div>
+          <div class="product-list-info">
+            <span class="product-list-name">MacBook Air M1 - 2020</span>
+            <span class="product-list-price">GHS 9,800</span>
+            <span class="product-list-stock">In Stock: 3</span>
+          </div>
+          <div class="product-list-actions">
+            <button class="action-btn edit">✏️</button>
+            <button class="action-btn delete">🗑️</button>
+          </div>
+        </div>
+
+        <div class="product-list-item">
+          <div class="product-list-image">
+            <div class="image-placeholder small">🎧</div>
+          </div>
+          <div class="product-list-info">
+            <span class="product-list-name">AirPods Pro</span>
+            <span class="product-list-price">GHS 1,500</span>
+            <span class="product-list-stock">In Stock: 10</span>
+          </div>
+          <div class="product-list-actions">
+            <button class="action-btn edit">✏️</button>
+            <button class="action-btn delete">🗑️</button>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="btn-add-product">+ Add New Product</button>
+    </div>
+
+    <!-- ========== ORDERS TAB ========== -->
+    <div class="tab-content" id="ordersTab" style="display: none;">
+      <div class="order-list">
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">#BB2026</span>
+            <span class="order-status status-new">New</span>
+          </div>
+          <div class="order-card-body">
+            <span>iPhone 13 Pro - 256GB ×1</span>
+            <span class="order-amount">GHS 8,500</span>
+          </div>
+          <div class="order-card-footer">
+            <span class="order-buyer">Buyer: Kofi Mensah</span>
+            <button class="btn-accept-order">Accept</button>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">#BB2025</span>
+            <span class="order-status status-preparing">Preparing</span>
+          </div>
+          <div class="order-card-body">
+            <span>MacBook Air M1 ×1</span>
+            <span class="order-amount">GHS 9,800</span>
+          </div>
+          <div class="order-card-footer">
+            <span class="order-buyer">Buyer: Ama Serwaa</span>
+            <button class="btn-ready-order">Mark Ready</button>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">#BB2024</span>
+            <span class="order-status status-completed">Completed</span>
+          </div>
+          <div class="order-card-body">
+            <span>AirPods Pro ×2</span>
+            <span class="order-amount">GHS 3,000</span>
+          </div>
+          <div class="order-card-footer">
+            <span class="order-buyer">Buyer: Yaw Boateng</span>
+            <span class="order-paid">✅ Paid Out</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========== EARNINGS TAB ========== -->
+    <div class="tab-content" id="earningsTab" style="display: none;">
+      <div class="earnings-summary">
+        <div class="earning-row">
+          <span>Total Earned</span>
+          <span class="earning-amount">GHS 45,200</span>
+        </div>
+        <div class="earning-row">
+          <span>Paid Out</span>
+          <span class="earning-amount paid">GHS 41,400</span>
+        </div>
+        <div class="earning-row">
+          <span>Pending</span>
+          <span class="earning-amount pending">GHS 3,800</span>
+        </div>
+      </div>
+
+      <h3 class="tracking-section-title" style="margin-top: 16px;">Payout History</h3>
+      <div class="payout-list">
+        <div class="payout-item">
+          <span>July 1, 2026</span>
+          <span>GHS 12,500</span>
+          <span class="status-completed">✅ Paid</span>
+        </div>
+        <div class="payout-item">
+          <span>June 25, 2026</span>
+          <span>GHS 8,200</span>
+          <span class="status-completed">✅ Paid</span>
+        </div>
+        <div class="payout-item">
+          <span>June 18, 2026</span>
+          <span>GHS 20,700</span>
+          <span class="status-completed">✅ Paid</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Message -->
+    <div class="trust-badge cart-trust" style="margin: 16px 0;">
+      <span class="trust-icon">🛡️</span>
+      <span>Get paid securely through BuyBridge escrow</span>
+    </div>
+
+  </main>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    function switchTab(tab) {
+      // Hide all tabs
+      document.getElementById('productsTab').style.display = 'none';
+      document.getElementById('ordersTab').style.display = 'none';
+      document.getElementById('earningsTab').style.display = 'none';
+
+      // Remove active from all tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      // Show selected tab
+      if (tab === 'products') {
+        document.getElementById('productsTab').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      } else if (tab === 'orders') {
+        document.getElementById('ordersTab').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+      } else if (tab === 'earnings') {
+        document.getElementById('earningsTab').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+      }
+    }
+  </script>
+
+</body>
+</html>

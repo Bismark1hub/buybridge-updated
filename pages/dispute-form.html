@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Issue - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="order-tracking.html" class="back-btn">←</a>
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <span class="header-title">Report Issue</span>
+    </div>
+  </header>
+
+  <!-- ==================== DISPUTE CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Order Reference -->
+    <div class="dispute-order-ref">
+      <span class="ref-label">Order Reference</span>
+      <span class="ref-number">#BB2026</span>
+    </div>
+
+    <!-- Warning Banner -->
+    <div class="warning-banner">
+      <span>⚠️</span>
+      <p>Funds will be frozen until this issue is resolved by BuyBridge admin</p>
+    </div>
+
+    <!-- Dispute Form -->
+    <div class="form-section">
+      <div class="form-group">
+        <label class="form-label">Issue Type *</label>
+        <select class="form-input">
+          <option value="">Select issue type</option>
+          <option value="not_received">Item not received</option>
+          <option value="damaged">Item damaged</option>
+          <option value="wrong_item">Wrong item delivered</option>
+          <option value="fake">Item is counterfeit</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe the Issue *</label>
+        <textarea class="form-input form-textarea" placeholder="Please describe what happened in detail..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Attach Photo (Optional)</label>
+        <div class="file-upload">
+          <input type="file" id="disputePhoto" accept=".jpg,.png">
+          <label for="disputePhoto" class="file-upload-label">
+            📷 Add Photo Evidence
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-submit-dispute" onclick="submitDispute()">
+        Submit Dispute
+      </button>
+    </div>
+
+    <!-- Trust Message -->
+    <div class="trust-badge cart-trust" style="margin-top: 16px;">
+      <span class="trust-icon">🛡️</span>
+      <span>BuyBridge protects both buyers and sellers</span>
+    </div>
+
+  </main>
+
+  <!-- ==================== SUCCESS MODAL ==================== -->
+  <div class="modal-overlay" id="disputeSuccessModal" style="display: none;">
+    <div class="modal-card success">
+      <div class="success-icon">📋</div>
+      <h3 class="modal-title">Dispute Submitted</h3>
+      <p class="modal-message">Your dispute for Order #BB2026 has been filed.</p>
+      <p class="modal-message sub">Our admin team will review it within 24 hours.</p>
+      <a href="order-tracking.html" class="btn-checkout" style="margin-top: 16px; display: block;">
+        Back to Order
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    function submitDispute() {
+      document.getElementById('disputeSuccessModal').style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>

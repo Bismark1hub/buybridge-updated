@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="../index.html" class="back-btn">←</a>
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <span class="header-title">My Cart</span>
+    </div>
+  </header>
+
+  <!-- ==================== CART CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Cart Items -->
+    <div class="cart-items">
+
+      <!-- Cart Item 1 -->
+      <div class="cart-item">
+        <a href="product-detail.html" class="cart-item-image">
+          <div class="image-placeholder small">📱</div>
+        </a>
+        <div class="cart-item-details">
+          <h3 class="cart-item-name">iPhone 13 Pro - 256GB</h3>
+          <p class="cart-item-seller">TechHub Ghana</p>
+          <p class="cart-item-price">GHS 8,500</p>
+          <div class="cart-item-qty">
+            <button class="qty-btn-sm">−</button>
+            <span>1</span>
+            <button class="qty-btn-sm">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove">🗑️</button>
+      </div>
+
+      <!-- Cart Item 2 -->
+      <div class="cart-item">
+        <a href="product-detail.html" class="cart-item-image">
+          <div class="image-placeholder small">👟</div>
+        </a>
+        <div class="cart-item-details">
+          <h3 class="cart-item-name">Nike Air Max - Original</h3>
+          <p class="cart-item-seller">Urban Kicks</p>
+          <p class="cart-item-price">GHS 1,200</p>
+          <div class="cart-item-qty">
+            <button class="qty-btn-sm">−</button>
+            <span>2</span>
+            <button class="qty-btn-sm">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove">🗑️</button>
+      </div>
+
+    </div>
+
+    <!-- Delivery Address -->
+    <div class="cart-section">
+      <h3 class="cart-section-title">📍 Delivery Address</h3>
+      <div class="address-box">
+        <p class="address-text">No. 12, Independence Avenue, East Legon, Accra</p>
+        <button class="address-change-btn">Change</button>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="cart-section">
+      <h3 class="cart-section-title">Order Summary</h3>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span>Subtotal (3 items)</span>
+          <span>GHS 10,900</span>
+        </div>
+        <div class="summary-row">
+          <span>Platform Fee (5%)</span>
+          <span>GHS 545</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>GHS 11,445</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Badge -->
+    <div class="trust-badge cart-trust">
+      <span class="trust-icon">🛡️</span>
+      <span>Your payment is secure with BuyBridge escrow</span>
+    </div>
+
+  </main>
+
+  <!-- ==================== BOTTOM CHECKOUT ==================== -->
+  <div class="bottom-checkout">
+    <div class="checkout-total">
+      <span class="checkout-label">Total</span>
+      <span class="checkout-amount">GHS 11,445</span>
+    </div>
+    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+  </div>
+
+</body>
+</html>

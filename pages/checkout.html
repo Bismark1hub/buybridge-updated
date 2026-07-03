@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="cart.html" class="back-btn">←</a>
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <span class="header-title">Checkout</span>
+    </div>
+  </header>
+
+  <!-- ==================== CHECKOUT CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Delivery Address -->
+    <div class="checkout-section">
+      <h3 class="checkout-section-title">📍 Delivery Address</h3>
+      <div class="checkout-address">
+        <p>No. 12, Independence Avenue, East Legon, Accra</p>
+        <span class="address-badge">Home</span>
+      </div>
+    </div>
+
+    <!-- Order Items Summary -->
+    <div class="checkout-section">
+      <h3 class="checkout-section-title">📦 Order Items</h3>
+      <div class="checkout-items">
+        <div class="checkout-item">
+          <span class="checkout-item-name">iPhone 13 Pro - 256GB ×1</span>
+          <span class="checkout-item-price">GHS 8,500</span>
+        </div>
+        <div class="checkout-item">
+          <span class="checkout-item-name">Nike Air Max - Original ×2</span>
+          <span class="checkout-item-price">GHS 2,400</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="checkout-section">
+      <h3 class="checkout-section-title">💳 Payment Method</h3>
+
+      <!-- Mobile Money -->
+      <div class="payment-options">
+        <label class="payment-option active">
+          <input type="radio" name="payment" value="momo" checked>
+          <span class="payment-icon">📱</span>
+          <div class="payment-info">
+            <span class="payment-name">Mobile Money</span>
+            <span class="payment-desc">MTN, Telecel, AirtelTigo</span>
+          </div>
+          <span class="payment-check">✓</span>
+        </label>
+
+        <label class="payment-option">
+          <input type="radio" name="payment" value="card">
+          <span class="payment-icon">💳</span>
+          <div class="payment-info">
+            <span class="payment-name">Card Payment</span>
+            <span class="payment-desc">Visa, Mastercard</span>
+          </div>
+          <span class="payment-check">✓</span>
+        </label>
+      </div>
+
+      <!-- Momo Provider Selection -->
+      <div class="momo-providers" id="momoProviders">
+        <label class="provider-option selected">
+          <input type="radio" name="provider" value="mtn" checked>
+          <span>MTN Mobile Money</span>
+        </label>
+        <label class="provider-option">
+          <input type="radio" name="provider" value="telecel">
+          <span>Telecel Cash</span>
+        </label>
+        <label class="provider-option">
+          <input type="radio" name="provider" value="at">
+          <span>AirtelTigo Money</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="checkout-section">
+      <h3 class="checkout-section-title">📋 Order Summary</h3>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>GHS 10,900</span>
+        </div>
+        <div class="summary-row">
+          <span>Platform Fee (5%)</span>
+          <span>GHS 545</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>GHS 11,445</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <div class="terms-box">
+      <label class="terms-label">
+        <input type="checkbox" id="agreeTerms">
+        <span>I agree to the <a href="#">Terms and Conditions</a></span>
+      </label>
+    </div>
+
+    <!-- Trust Badge -->
+    <div class="trust-badge cart-trust">
+      <span class="trust-icon">🛡️</span>
+      <div>
+        <strong>Your payment is secure with BuyBridge escrow</strong>
+        <p style="margin-top:4px;">Funds will be held and only released after you confirm delivery</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== BOTTOM PAY BUTTON ==================== -->
+  <div class="bottom-checkout">
+    <div class="checkout-total">
+      <span class="checkout-label">Total to Pay</span>
+      <span class="checkout-amount">GHS 11,445</span>
+    </div>
+    <button class="btn-checkout" id="payBtn" onclick="processPayment()">
+      Pay GHS 11,445
+    </button>
+  </div>
+
+  <!-- ==================== PAYMENT PROCESSING MODAL ==================== -->
+  <div class="modal-overlay" id="paymentModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-spinner"></div>
+      <h3 class="modal-title">Processing Payment</h3>
+      <p class="modal-message">Please wait while we process your payment via Mobile Money...</p>
+      <p class="modal-message sub">Do not close this page</p>
+    </div>
+  </div>
+
+  <!-- ==================== SUCCESS MODAL ==================== -->
+  <div class="modal-overlay" id="successModal" style="display: none;">
+    <div class="modal-card success">
+      <div class="success-icon">✅</div>
+      <h3 class="modal-title">Payment Successful!</h3>
+      <p class="modal-message">Your payment of GHS 11,445 has been held in escrow.</p>
+      <p class="modal-message sub">The seller will prepare your order now.</p>
+      <a href="order-tracking.html" class="btn-checkout" style="margin-top: 16px; display: block;">
+        Track Your Order
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // Toggle payment method
+    document.querySelectorAll('input[name="payment"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('active'));
+        this.closest('.payment-option').classList.add('active');
+        
+        const momoDiv = document.getElementById('momoProviders');
+        if (this.value === 'momo') {
+          momoDiv.style.display = 'block';
+        } else {
+          momoDiv.style.display = 'none';
+        }
+      });
+    });
+
+    // Toggle provider selection
+    document.querySelectorAll('.provider-option').forEach(opt => {
+      opt.addEventListener('click', function() {
+        document.querySelectorAll('.provider-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+        this.querySelector('input').checked = true;
+      });
+    });
+
+    // Process payment
+    function processPayment() {
+      const agreed = document.getElementById('agreeTerms').checked;
+      if (!agreed) {
+        alert('Please agree to the Terms and Conditions to proceed.');
+        return;
+      }
+
+      // Show processing modal
+      document.getElementById('paymentModal').style.display = 'flex';
+
+      // Simulate payment processing (replace with real Moolre API call later)
+      setTimeout(() => {
+        document.getElementById('paymentModal').style.display = 'none';
+        document.getElementById('successModal').style.display = 'flex';
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>

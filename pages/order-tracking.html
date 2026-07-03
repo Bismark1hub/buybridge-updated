@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order #BB2026 - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="../index.html" class="back-btn">←</a>
+      <div class="header-logo">
+        <span class="logo-icon">🌉</span>
+        <span class="logo-text">BuyBridge</span>
+      </div>
+      <span class="header-title">Order #BB2026</span>
+    </div>
+  </header>
+
+  <!-- ==================== TRACKING CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Escrow Status Banner -->
+    <div class="escrow-banner">
+      <span class="escrow-icon">🔒</span>
+      <div>
+        <strong>Funds held securely in BuyBridge escrow</strong>
+        <p>Payment will be released to seller after you confirm delivery</p>
+      </div>
+    </div>
+
+    <!-- Order Status Timeline -->
+    <div class="tracking-section">
+      <h3 class="tracking-section-title">Order Status</h3>
+      <div class="timeline">
+
+        <div class="timeline-step completed">
+          <div class="timeline-dot">✓</div>
+          <div class="timeline-info">
+            <span class="timeline-title">Order Placed</span>
+            <span class="timeline-time">Today, 10:30 AM</span>
+          </div>
+        </div>
+
+        <div class="timeline-step completed">
+          <div class="timeline-dot">✓</div>
+          <div class="timeline-info">
+            <span class="timeline-title">Payment Confirmed</span>
+            <span class="timeline-time">Today, 10:32 AM</span>
+          </div>
+        </div>
+
+        <div class="timeline-step active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-info">
+            <span class="timeline-title">Seller Preparing Order</span>
+            <span class="timeline-time">In progress...</span>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <div class="timeline-info">
+            <span class="timeline-title">Ready for Pickup/Delivery</span>
+            <span class="timeline-time">Waiting</span>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <div class="timeline-info">
+            <span class="timeline-title">Confirm Delivery</span>
+            <span class="timeline-time">Enter OTP to release funds</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="tracking-section">
+      <h3 class="tracking-section-title">Product Details</h3>
+      <div class="tracking-product">
+        <a href="product-detail.html" class="cart-item-image">
+          <div class="image-placeholder small">📱</div>
+        </a>
+        <div class="tracking-product-info">
+          <span class="tracking-product-name">iPhone 13 Pro - 256GB</span>
+          <span class="tracking-product-qty">Quantity: 1</span>
+          <span class="tracking-product-seller">Sold by: TechHub Ghana</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Address -->
+    <div class="tracking-section">
+      <h3 class="tracking-section-title">📍 Delivery Address</h3>
+      <div class="checkout-address">
+        <p>No. 12, Independence Avenue, East Legon, Accra</p>
+      </div>
+    </div>
+
+    <!-- OTP Section -->
+    <div class="tracking-section otp-section">
+      <h3 class="tracking-section-title">Confirm Delivery</h3>
+      <p class="otp-instruction">Enter the 4-digit OTP sent to your phone to confirm delivery and release funds to seller.</p>
+      
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" class="otp-box" id="otp1" oninput="moveToNext(this, 'otp2')">
+        <input type="text" maxlength="1" class="otp-box" id="otp2" oninput="moveToNext(this, 'otp3')">
+        <input type="text" maxlength="1" class="otp-box" id="otp3" oninput="moveToNext(this, 'otp4')">
+        <input type="text" maxlength="1" class="otp-box" id="otp4">
+      </div>
+
+      <button class="btn-confirm-delivery" onclick="confirmDelivery()">Confirm Delivery</button>
+      <button class="btn-resend-otp" onclick="resendOTP()">Resend OTP</button>
+    </div>
+
+    <!-- Report Issue -->
+    <div class="report-section">
+      <a href="dispute-form.html" class="btn-report-issue">⚠️ Report an Issue</a>
+    </div>
+
+  </main>
+
+  <!-- ==================== OTP SUCCESS MODAL ==================== -->
+  <div class="modal-overlay" id="otpSuccessModal" style="display: none;">
+    <div class="modal-card success">
+      <div class="success-icon">🎉</div>
+      <h3 class="modal-title">Delivery Confirmed!</h3>
+      <p class="modal-message">Funds have been released to the seller.</p>
+      <p class="modal-message sub">Thank you for using BuyBridge!</p>
+      <a href="../index.html" class="btn-checkout" style="margin-top: 16px; display: block;">
+        Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    function moveToNext(current, nextId) {
+      if (current.value.length === 1) {
+        document.getElementById(nextId)?.focus();
+      }
+    }
+
+    function resendOTP() {
+      alert('A new OTP has been sent to your phone number.');
+    }
+
+    function confirmDelivery() {
+      const otp1 = document.getElementById('otp1').value;
+      const otp2 = document.getElementById('otp2').value;
+      const otp3 = document.getElementById('otp3').value;
+      const otp4 = document.getElementById('otp4').value;
+      const otp = otp1 + otp2 + otp3 + otp4;
+
+      if (otp.length < 4) {
+        alert('Please enter the complete 4-digit OTP.');
+        return;
+      }
+
+      if (otp === '1234') {
+        document.getElementById('otpSuccessModal').style.display = 'flex';
+      } else {
+        alert('Invalid OTP. Please try again.');
+      }
+    }
+  </script>
+
+</body>
+</html>
