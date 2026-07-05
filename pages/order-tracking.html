@@ -3,108 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order #BB2026 - BuyBridge</title>
+  <title>Order Tracking - BuyBridge</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <a href="../index.html" class="back-btn">←</a>
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <span class="header-title">Order #BB2026</span>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== TRACKING CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Escrow Status Banner -->
     <div class="escrow-banner">
       <span class="escrow-icon">🔒</span>
       <div>
         <strong>Funds held securely in BuyBridge escrow</strong>
-        <p>Payment will be released to seller after you confirm delivery</p>
+        <p id="escrowStatus">Payment will be released to seller after you confirm delivery</p>
       </div>
     </div>
 
-    <!-- Order Status Timeline -->
     <div class="tracking-section">
       <h3 class="tracking-section-title">Order Status</h3>
-      <div class="timeline">
-
-        <div class="timeline-step completed">
-          <div class="timeline-dot">✓</div>
-          <div class="timeline-info">
-            <span class="timeline-title">Order Placed</span>
-            <span class="timeline-time">Today, 10:30 AM</span>
-          </div>
-        </div>
-
-        <div class="timeline-step completed">
-          <div class="timeline-dot">✓</div>
-          <div class="timeline-info">
-            <span class="timeline-title">Payment Confirmed</span>
-            <span class="timeline-time">Today, 10:32 AM</span>
-          </div>
-        </div>
-
-        <div class="timeline-step active">
-          <div class="timeline-dot"></div>
-          <div class="timeline-info">
-            <span class="timeline-title">Seller Preparing Order</span>
-            <span class="timeline-time">In progress...</span>
-          </div>
-        </div>
-
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-info">
-            <span class="timeline-title">Ready for Pickup/Delivery</span>
-            <span class="timeline-time">Waiting</span>
-          </div>
-        </div>
-
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-info">
-            <span class="timeline-title">Confirm Delivery</span>
-            <span class="timeline-time">Enter OTP to release funds</span>
-          </div>
-        </div>
-
+      <div class="timeline" id="timeline">
+        <p style="color: var(--text-light);">Loading status...</p>
       </div>
     </div>
 
-    <!-- Product Details -->
     <div class="tracking-section">
       <h3 class="tracking-section-title">Product Details</h3>
-      <div class="tracking-product">
-        <a href="product-detail.html" class="cart-item-image">
-          <div class="image-placeholder small">📱</div>
-        </a>
-        <div class="tracking-product-info">
-          <span class="tracking-product-name">iPhone 13 Pro - 256GB</span>
-          <span class="tracking-product-qty">Quantity: 1</span>
-          <span class="tracking-product-seller">Sold by: TechHub Ghana</span>
-        </div>
+      <div class="tracking-product" id="trackingProduct">
+        <p style="color: var(--text-light);">Loading product...</p>
       </div>
     </div>
 
-    <!-- Delivery Address -->
     <div class="tracking-section">
       <h3 class="tracking-section-title">📍 Delivery Address</h3>
       <div class="checkout-address">
-        <p>No. 12, Independence Avenue, East Legon, Accra</p>
+        <p id="deliveryAddr">Loading address...</p>
       </div>
     </div>
 
-    <!-- OTP Section -->
-    <div class="tracking-section otp-section">
+    <div class="tracking-section otp-section" id="otpSection" style="display: none;">
       <h3 class="tracking-section-title">Confirm Delivery</h3>
       <p class="otp-instruction">Enter the 4-digit OTP sent to your phone to confirm delivery and release funds to seller.</p>
       
@@ -119,14 +56,12 @@
       <button class="btn-resend-otp" onclick="resendOTP()">Resend OTP</button>
     </div>
 
-    <!-- Report Issue -->
     <div class="report-section">
-      <a href="dispute-form.html" class="btn-report-issue">⚠️ Report an Issue</a>
+      <a href="dispute-form.html" class="btn-report-issue" id="reportIssueBtn">⚠️ Report an Issue</a>
     </div>
 
   </main>
 
-  <!-- ==================== OTP SUCCESS MODAL ==================== -->
   <div class="modal-overlay" id="otpSuccessModal" style="display: none;">
     <div class="modal-card success">
       <div class="success-icon">🎉</div>
@@ -139,36 +74,137 @@
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id');
+    let currentOrder = null;
+
+    if (!isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+
+    initHeader('Order Tracking', '../index.html');
+
+    async function loadOrder() {
+      try {
+        if (orderId) {
+          const data = await apiGetOrder(orderId);
+          currentOrder = data.order;
+          displayOrder(currentOrder);
+        } else {
+          showPlaceholderOrder();
+        }
+      } catch (error) {
+        showPlaceholderOrder();
+      }
+    }
+
+    function displayOrder(order) {
+      document.getElementById('deliveryAddr').textContent = order.delivery_address || 'Not specified';
+      document.getElementById('reportIssueBtn').href = `dispute-form.html?order_id=${order.id}`;
+
+      if (order.payment_status === 'escrowed') {
+        document.getElementById('escrowStatus').textContent = 'Funds are held in escrow. Confirm delivery to release payment.';
+      } else if (order.payment_status === 'released') {
+        document.getElementById('escrowStatus').textContent = 'Funds have been released to the seller.';
+      }
+
+      const steps = [
+        { title: 'Order Placed', done: true, active: false, time: order.created_at || 'Just now' },
+        { title: 'Payment Confirmed', done: order.payment_status !== 'unpaid', active: order.payment_status === 'unpaid', time: order.payment_status !== 'unpaid' ? 'Confirmed' : 'Waiting' },
+        { title: 'Seller Preparing', done: order.status === 'paid' || order.status === 'delivered' || order.status === 'completed', active: order.status === 'paid', time: order.status === 'paid' ? 'In progress...' : 'Waiting' },
+        { title: 'Ready for Delivery', done: order.status === 'delivered' || order.status === 'completed', active: order.status === 'delivered', time: order.status === 'delivered' ? 'Ready' : 'Waiting' },
+        { title: 'Confirm Delivery', done: order.status === 'completed', active: order.otp_verified, time: order.status === 'completed' ? 'Done' : 'Enter OTP' }
+      ];
+
+      document.getElementById('timeline').innerHTML = steps.map((step, i) => `
+        <div class="timeline-step ${step.done ? 'completed' : ''} ${step.active ? 'active' : ''}">
+          <div class="timeline-dot">${step.done ? '✓' : ''}</div>
+          <div class="timeline-info">
+            <span class="timeline-title">${step.title}</span>
+            <span class="timeline-time">${step.time}</span>
+          </div>
+        </div>
+      `).join('');
+
+      if (order.status === 'delivered' && !order.otp_verified) {
+        document.getElementById('otpSection').style.display = 'block';
+      }
+
+      document.getElementById('trackingProduct').innerHTML = `
+        <div class="cart-item-image"><div class="image-placeholder small">📦</div></div>
+        <div class="tracking-product-info">
+          <span class="tracking-product-name">${order.product_name || 'Product'}</span>
+          <span class="tracking-product-qty">Quantity: ${order.quantity || 1}</span>
+          <span class="tracking-product-seller">Order total: GHS ${parseFloat(order.total || 0).toLocaleString()}</span>
+        </div>
+      `;
+    }
+
+    function showPlaceholderOrder() {
+      document.getElementById('deliveryAddr').textContent = 'No. 12, Independence Avenue, East Legon, Accra';
+      
+      document.getElementById('timeline').innerHTML = `
+        <div class="timeline-step completed"><div class="timeline-dot">✓</div><div class="timeline-info"><span class="timeline-title">Order Placed</span><span class="timeline-time">Today, 10:30 AM</span></div></div>
+        <div class="timeline-step completed"><div class="timeline-dot">✓</div><div class="timeline-info"><span class="timeline-title">Payment Confirmed</span><span class="timeline-time">Today, 10:32 AM</span></div></div>
+        <div class="timeline-step active"><div class="timeline-dot"></div><div class="timeline-info"><span class="timeline-title">Seller Preparing</span><span class="timeline-time">In progress...</span></div></div>
+        <div class="timeline-step"><div class="timeline-dot"></div><div class="timeline-info"><span class="timeline-title">Ready for Delivery</span><span class="timeline-time">Waiting</span></div></div>
+        <div class="timeline-step"><div class="timeline-dot"></div><div class="timeline-info"><span class="timeline-title">Confirm Delivery</span><span class="timeline-time">Enter OTP</span></div></div>
+      `;
+
+      document.getElementById('trackingProduct').innerHTML = `
+        <div class="cart-item-image"><div class="image-placeholder small">📱</div></div>
+        <div class="tracking-product-info">
+          <span class="tracking-product-name">iPhone 13 Pro - 256GB</span>
+          <span class="tracking-product-qty">Quantity: 1</span>
+          <span class="tracking-product-seller">Sold by: TechHub Ghana</span>
+        </div>
+      `;
+    }
+
     function moveToNext(current, nextId) {
       if (current.value.length === 1) {
         document.getElementById(nextId)?.focus();
       }
     }
 
-    function resendOTP() {
-      alert('A new OTP has been sent to your phone number.');
+    async function resendOTP() {
+      if (currentOrder) {
+        try { await apiSendOTP(currentOrder.id); } catch (error) {}
+      }
+      showToast('A new OTP has been sent to your phone', 'info');
     }
 
-    function confirmDelivery() {
-      const otp1 = document.getElementById('otp1').value;
-      const otp2 = document.getElementById('otp2').value;
-      const otp3 = document.getElementById('otp3').value;
-      const otp4 = document.getElementById('otp4').value;
-      const otp = otp1 + otp2 + otp3 + otp4;
-
+    async function confirmDelivery() {
+      const otp = ['otp1', 'otp2', 'otp3', 'otp4'].map(id => document.getElementById(id).value).join('');
+      
       if (otp.length < 4) {
-        alert('Please enter the complete 4-digit OTP.');
+        showToast('Please enter the complete 4-digit OTP', 'warning');
         return;
       }
 
-      if (otp === '1234') {
+      try {
+        if (currentOrder) {
+          await apiVerifyOTP(currentOrder.id, otp);
+          await apiReleaseFunds(currentOrder.id);
+        } else if (otp === '1234') {
+          // Demo mode
+        } else {
+          showToast('Invalid OTP. Please try again.', 'error');
+          return;
+        }
+
         document.getElementById('otpSuccessModal').style.display = 'flex';
-      } else {
-        alert('Invalid OTP. Please try again.');
+      } catch (error) {
+        showToast(error.message || 'OTP verification failed', 'error');
       }
     }
+
+    loadOrder();
   </script>
 
 </body>

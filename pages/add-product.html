@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="header" id="mainHeader"></header>
+
+  <main class="main-content">
+
+    <div class="form-section" style="margin-top: 12px;">
+      <div class="form-group">
+        <label class="form-label">Product Name *</label>
+        <input type="text" class="form-input" id="productName" placeholder="Enter product name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-input form-textarea" id="productDescription" placeholder="Describe your product..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Price (GHS) *</label>
+        <input type="number" class="form-input" id="productPrice" placeholder="0.00" step="0.01" min="0">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Quantity Available *</label>
+        <input type="number" class="form-input" id="productQuantity" placeholder="1" min="1" value="1">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-input" id="productCategory">
+          <option value="">Select category</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+          <option value="food">Food</option>
+          <option value="services">Services</option>
+          <option value="home">Home & Living</option>
+          <option value="beauty">Beauty</option>
+          <option value="sports">Sports</option>
+        </select>
+      </div>
+
+      <button class="btn-auth-submit" onclick="submitProduct()">Add Product</button>
+    </div>
+
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    if (!isLoggedIn() || getUserRole() !== 'seller') {
+      window.location.href = 'login.html';
+    }
+
+    initHeader('Add Product', 'seller-dashboard.html');
+
+    async function submitProduct() {
+      const name = document.getElementById('productName').value.trim();
+      const price = document.getElementById('productPrice').value;
+
+      if (!name || !price) {
+        showToast('Please fill in all required fields', 'warning');
+        return;
+      }
+
+      try {
+        await apiCreateProduct({
+          name,
+          description: document.getElementById('productDescription').value.trim(),
+          price: parseFloat(price),
+          quantity: parseInt(document.getElementById('productQuantity').value),
+          category_id: document.getElementById('productCategory').value || undefined
+        });
+
+        showToast('Product added successfully!', 'success');
+        setTimeout(() => {
+          window.location.href = 'seller-dashboard.html';
+        }, 500);
+      } catch (error) {}
+    }
+  </script>
+
+</body>
+</html>

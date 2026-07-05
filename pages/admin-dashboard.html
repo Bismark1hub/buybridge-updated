@@ -8,52 +8,35 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <span class="admin-badge">Admin</span>
-      <div class="header-actions">
-        <button class="notif-btn">🔔</button>
-        <button class="profile-btn">👤</button>
-      </div>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== ADMIN CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Platform Overview -->
     <h2 class="admin-greeting">Welcome, Admin</h2>
 
-    <!-- Stats Cards -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-icon">👥</span>
-        <span class="stat-value">1,240</span>
+        <span class="stat-value" id="totalUsers">--</span>
         <span class="stat-label">Total Users</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">📦</span>
-        <span class="stat-value">356</span>
+        <span class="stat-value" id="totalOrders">--</span>
         <span class="stat-label">Total Orders</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">💰</span>
-        <span class="stat-value">GHS 182K</span>
+        <span class="stat-value" id="totalRevenue">GHS --</span>
         <span class="stat-label">Total Revenue</span>
       </div>
       <div class="stat-card alert">
         <span class="stat-icon">⚠️</span>
-        <span class="stat-value">5</span>
+        <span class="stat-value" id="pendingDisputes">--</span>
         <span class="stat-label">Pending Disputes</span>
       </div>
     </div>
 
-    <!-- Admin Navigation Tabs -->
     <div class="dashboard-tabs admin-tabs">
       <button class="tab-btn active" onclick="switchAdminTab('overview')">Overview</button>
       <button class="tab-btn" onclick="switchAdminTab('users')">Users</button>
@@ -62,235 +45,70 @@
       <button class="tab-btn" onclick="switchAdminTab('settings')">Settings</button>
     </div>
 
-    <!-- ========== OVERVIEW TAB ========== -->
     <div class="tab-content" id="overviewTab">
       <div class="admin-section">
         <h3 class="admin-section-title">Recent Orders</h3>
-        <div class="admin-table">
-          <div class="admin-table-row header">
-            <span>Order #</span>
-            <span>Buyer</span>
-            <span>Seller</span>
-            <span>Amount</span>
-            <span>Status</span>
-          </div>
-          <div class="admin-table-row">
-            <span>#BB2026</span>
-            <span>Kofi Mensah</span>
-            <span>TechHub GH</span>
-            <span>GHS 8,500</span>
-            <span class="status-new">New</span>
-          </div>
-          <div class="admin-table-row">
-            <span>#BB2025</span>
-            <span>Ama Serwaa</span>
-            <span>TechHub GH</span>
-            <span>GHS 9,800</span>
-            <span class="status-preparing">Preparing</span>
-          </div>
-          <div class="admin-table-row">
-            <span>#BB2024</span>
-            <span>Yaw Boateng</span>
-            <span>Urban Kicks</span>
-            <span>GHS 3,000</span>
-            <span class="status-completed">Completed</span>
-          </div>
-          <div class="admin-table-row">
-            <span>#BB2023</span>
-            <span>Esi Dadzie</span>
-            <span>Luxury Scents</span>
-            <span>GHS 950</span>
-            <span class="status-disputed">Disputed</span>
-          </div>
+        <div class="admin-table" id="recentOrders">
+          <p style="color: var(--text-light); padding: 12px;">Loading...</p>
         </div>
       </div>
     </div>
 
-    <!-- ========== USERS TAB ========== -->
     <div class="tab-content" id="usersTab" style="display: none;">
       <div class="admin-section">
         <h3 class="admin-section-title">All Users</h3>
-        <div class="admin-table">
-          <div class="admin-table-row header">
-            <span>Name</span>
-            <span>Role</span>
-            <span>Joined</span>
-            <span>Action</span>
-          </div>
-          <div class="admin-table-row">
-            <span>Kofi Mensah</span>
-            <span class="role-buyer">Buyer</span>
-            <span>June 15</span>
-            <button class="btn-sm view">View</button>
-          </div>
-          <div class="admin-table-row">
-            <span>Ama Serwaa</span>
-            <span class="role-buyer">Buyer</span>
-            <span>June 20</span>
-            <button class="btn-sm view">View</button>
-          </div>
-          <div class="admin-table-row">
-            <span>TechHub Ghana</span>
-            <span class="role-seller">Seller</span>
-            <span>May 5</span>
-            <button class="btn-sm view">View</button>
-          </div>
-          <div class="admin-table-row">
-            <span>Urban Kicks</span>
-            <span class="role-seller">Seller</span>
-            <span>April 12</span>
-            <button class="btn-sm view">View</button>
-          </div>
+        <div class="admin-table" id="usersTable">
+          <p style="color: var(--text-light); padding: 12px;">Loading...</p>
         </div>
       </div>
     </div>
 
-    <!-- ========== SELLERS TAB ========== -->
     <div class="tab-content" id="sellersTab" style="display: none;">
       <div class="admin-section">
         <h3 class="admin-section-title">Pending Seller Approvals</h3>
-        <div class="approval-list">
-          <div class="approval-card">
-            <div class="approval-info">
-              <span class="approval-name">Ghana Fashion Hub</span>
-              <span class="approval-category">Fashion</span>
-              <span class="approval-date">Applied: July 2, 2026</span>
-              <button class="btn-sm outline">View Documents</button>
-            </div>
-            <div class="approval-actions">
-              <button class="btn-approve">Approve</button>
-              <button class="btn-reject">Reject</button>
-            </div>
-          </div>
-          <div class="approval-card">
-            <div class="approval-info">
-              <span class="approval-name">Fresh Foods Accra</span>
-              <span class="approval-category">Food</span>
-              <span class="approval-date">Applied: July 1, 2026</span>
-              <button class="btn-sm outline">View Documents</button>
-            </div>
-            <div class="approval-actions">
-              <button class="btn-approve">Approve</button>
-              <button class="btn-reject">Reject</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <h3 class="admin-section-title">Approved Sellers</h3>
-        <div class="admin-table">
-          <div class="admin-table-row header">
-            <span>Store</span>
-            <span>Category</span>
-            <span>Rating</span>
-            <span>Status</span>
-          </div>
-          <div class="admin-table-row">
-            <span>TechHub Ghana</span>
-            <span>Electronics</span>
-            <span>⭐ 4.8</span>
-            <span class="status-completed">Active</span>
-          </div>
-          <div class="admin-table-row">
-            <span>Urban Kicks</span>
-            <span>Fashion</span>
-            <span>⭐ 4.5</span>
-            <span class="status-completed">Active</span>
-          </div>
+        <div class="approval-list" id="pendingApprovals">
+          <p style="color: var(--text-light); padding: 12px;">Loading...</p>
         </div>
       </div>
     </div>
 
-    <!-- ========== DISPUTES TAB ========== -->
     <div class="tab-content" id="disputesTab" style="display: none;">
       <div class="admin-section">
         <h3 class="admin-section-title">Active Disputes</h3>
-        <div class="dispute-list">
-          <div class="dispute-card">
-            <div class="dispute-header">
-              <span class="dispute-id">Order #BB2023</span>
-              <span class="status-disputed">Open</span>
-            </div>
-            <div class="dispute-body">
-              <p><strong>Buyer:</strong> Esi Dadzie</p>
-              <p><strong>Seller:</strong> Luxury Scents</p>
-              <p><strong>Issue:</strong> Item damaged</p>
-              <p class="dispute-desc">The perfume bottle arrived cracked and leaking.</p>
-            </div>
-            <div class="dispute-actions">
-              <button class="btn-refund">Refund Buyer</button>
-              <button class="btn-release">Release to Seller</button>
-              <button class="btn-sm outline">Review</button>
-            </div>
-          </div>
-
-          <div class="dispute-card">
-            <div class="dispute-header">
-              <span class="dispute-id">Order #BB2018</span>
-              <span class="status-disputed">Open</span>
-            </div>
-            <div class="dispute-body">
-              <p><strong>Buyer:</strong> Kwame Asare</p>
-              <p><strong>Seller:</strong> Home Essentials</p>
-              <p><strong>Issue:</strong> Item not received</p>
-              <p class="dispute-desc">Buyer claims seller never showed up for delivery.</p>
-            </div>
-            <div class="dispute-actions">
-              <button class="btn-refund">Refund Buyer</button>
-              <button class="btn-release">Release to Seller</button>
-              <button class="btn-sm outline">Review</button>
-            </div>
-          </div>
+        <div class="dispute-list" id="disputesList">
+          <p style="color: var(--text-light); padding: 12px;">Loading...</p>
         </div>
       </div>
     </div>
 
-    <!-- ========== SETTINGS TAB ========== -->
     <div class="tab-content" id="settingsTab" style="display: none;">
       <div class="admin-section">
         <h3 class="admin-section-title">Platform Settings</h3>
         
         <div class="settings-group">
           <label class="settings-label">Commission Rate (%)</label>
-          <input type="number" class="settings-input" value="5" min="1" max="20">
+          <input type="number" class="settings-input" id="commissionRate" value="5" min="1" max="20">
         </div>
 
         <div class="settings-group">
           <label class="settings-label">Auto-Release Timer (Hours)</label>
-          <input type="number" class="settings-input" value="48" min="1" max="168">
+          <input type="number" class="settings-input" id="autoRelease" value="48" min="1" max="168">
         </div>
 
         <div class="settings-group">
           <label class="settings-label">Moolre API Key</label>
-          <input type="password" class="settings-input" placeholder="Enter API key..." value="••••••••••••••••">
-        </div>
-
-        <div class="settings-group">
-          <label class="settings-label">Moolre API Secret</label>
-          <input type="password" class="settings-input" placeholder="Enter API secret..." value="••••••••••••••••">
-        </div>
-
-        <div class="settings-group">
-          <label class="settings-label">Moolre SMS Sender ID</label>
-          <input type="text" class="settings-input" value="BuyBridge">
+          <input type="password" class="settings-input" id="apiKey" placeholder="Enter API key...">
         </div>
 
         <div class="settings-group">
           <label class="settings-label">Support Email</label>
-          <input type="email" class="settings-input" value="support@buybridge.com">
+          <input type="email" class="settings-input" id="supportEmail" value="support@buybridge.com">
         </div>
 
-        <div class="settings-group">
-          <label class="settings-label">Support Phone</label>
-          <input type="text" class="settings-input" value="+233 50 123 4567">
-        </div>
-
-        <button class="btn-save-settings">Save Settings</button>
+        <button class="btn-save-settings" onclick="saveSettings()">Save Settings</button>
       </div>
     </div>
 
-    <!-- Moolre Badge -->
     <div class="trust-badge cart-trust" style="margin: 16px 0;">
       <span class="trust-icon">🛡️</span>
       <span>BuyBridge is protected by Moolre escrow</span>
@@ -298,25 +116,96 @@
 
   </main>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
   <script>
+    if (!isLoggedIn() || getUserRole() !== 'admin') {
+      window.location.href = 'login.html';
+    }
+
+    initHeader('Admin Dashboard', null);
+
     function switchAdminTab(tab) {
-      // Hide all tabs
-      const tabs = ['overview', 'users', 'sellers', 'disputes', 'settings'];
-      tabs.forEach(t => {
+      ['overview', 'users', 'sellers', 'disputes', 'settings'].forEach(t => {
         document.getElementById(t + 'Tab').style.display = 'none';
       });
-
-      // Remove active from all buttons
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-      // Show selected tab
       document.getElementById(tab + 'Tab').style.display = 'block';
-
-      // Set active button
-      const tabIndex = tabs.indexOf(tab);
+      const tabIndex = ['overview', 'users', 'sellers', 'disputes', 'settings'].indexOf(tab);
       document.querySelectorAll('.tab-btn')[tabIndex].classList.add('active');
+
+      if (tab === 'users') loadUsers();
+      if (tab === 'disputes') loadDisputes();
     }
+
+    async function loadUsers() {
+      try {
+        const data = await apiListUsers();
+        const users = data.users || [];
+        document.getElementById('totalUsers').textContent = users.length;
+        
+        document.getElementById('usersTable').innerHTML = `
+          <div class="admin-table-row header">
+            <span>Name</span><span>Role</span><span>Joined</span><span>Action</span>
+          </div>
+          ${users.map(u => `
+            <div class="admin-table-row">
+              <span>${u.full_name}</span>
+              <span class="role-${u.role === 'seller' ? 'seller' : 'buyer'}">${u.role}</span>
+              <span>${new Date(u.created_at).toLocaleDateString()}</span>
+              <button class="btn-sm view">View</button>
+            </div>
+          `).join('')}
+        `;
+      } catch (error) {}
+    }
+
+    async function loadDisputes() {
+      try {
+        const data = await apiListDisputes();
+        const disputes = data.disputes || [];
+        document.getElementById('pendingDisputes').textContent = disputes.length;
+
+        document.getElementById('disputesList').innerHTML = disputes.length === 0
+          ? '<p style="color: var(--text-light); padding: 12px;">No active disputes</p>'
+          : disputes.map(d => `
+            <div class="dispute-card">
+              <div class="dispute-header">
+                <span class="dispute-id">Order #${d.order_id?.substring(0,8)}</span>
+                <span class="status-disputed">${d.status}</span>
+              </div>
+              <div class="dispute-body">
+                <p><strong>Issue:</strong> ${d.issue_type}</p>
+                <p class="dispute-desc">${d.description}</p>
+              </div>
+              <div class="dispute-actions">
+                <button class="btn-refund" onclick="resolveDispute('${d.id}', 'resolved_buyer')">Refund Buyer</button>
+                <button class="btn-release" onclick="resolveDispute('${d.id}', 'resolved_seller')">Release to Seller</button>
+              </div>
+            </div>
+          `).join('');
+      } catch (error) {}
+    }
+
+    async function resolveDispute(disputeId, outcome) {
+      try {
+        await apiResolveDispute({ dispute_id: disputeId, outcome, resolution_notes: 'Resolved by admin' });
+        showToast('Dispute resolved', 'success');
+        loadDisputes();
+      } catch (error) {}
+    }
+
+    async function saveSettings() {
+      try {
+        await apiUpdateSettings('commission_rate', document.getElementById('commissionRate').value);
+        await apiUpdateSettings('auto_release_hours', document.getElementById('autoRelease').value);
+        showToast('Settings saved', 'success');
+      } catch (error) {}
+    }
+
+    loadUsers();
   </script>
 
 </body>

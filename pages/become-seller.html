@@ -8,22 +8,10 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <a href="../index.html" class="back-btn">←</a>
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <span class="header-title">Become a Seller</span>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== FORM CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Benefits Section -->
     <div class="benefits-section">
       <h2 class="benefits-title">Why sell on BuyBridge?</h2>
       <div class="benefits-grid">
@@ -46,28 +34,27 @@
       </div>
     </div>
 
-    <!-- Application Form -->
     <div class="form-section">
       <h2 class="form-title">Seller Application</h2>
 
       <div class="form-group">
         <label class="form-label">Business Name *</label>
-        <input type="text" class="form-input" placeholder="Enter your business name">
+        <input type="text" class="form-input" id="businessName" placeholder="Enter your business name">
       </div>
 
       <div class="form-group">
         <label class="form-label">Business Address *</label>
-        <input type="text" class="form-input" placeholder="Enter your business address">
+        <input type="text" class="form-input" id="businessAddress" placeholder="Enter your business address">
       </div>
 
       <div class="form-group">
-        <label class="form-label">Phone Number *</label>
-        <input type="tel" class="form-input" placeholder="+233 XX XXX XXXX">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-input" id="businessPhone" placeholder="+233 XX XXX XXXX">
       </div>
 
       <div class="form-group">
-        <label class="form-label">Business Category *</label>
-        <select class="form-input">
+        <label class="form-label">Business Category</label>
+        <select class="form-input" id="businessCategory">
           <option value="">Select a category</option>
           <option value="electronics">Electronics</option>
           <option value="fashion">Fashion</option>
@@ -82,17 +69,7 @@
 
       <div class="form-group">
         <label class="form-label">Store Description</label>
-        <textarea class="form-input form-textarea" placeholder="Tell customers about your business..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">ID / Verification Document *</label>
-        <div class="file-upload">
-          <input type="file" id="docUpload" accept=".pdf,.jpg,.png">
-          <label for="docUpload" class="file-upload-label">
-            📄 Upload Document (PDF, JPG, PNG)
-          </label>
-        </div>
+        <textarea class="form-input form-textarea" id="storeDescription" placeholder="Tell customers about your business..."></textarea>
       </div>
 
       <div class="terms-box">
@@ -102,40 +79,63 @@
         </label>
       </div>
 
-      <button class="btn-submit-application" onclick="submitApplication()">
-        Submit Application
-      </button>
+      <button class="btn-submit-application" onclick="submitApplication()">Submit Application</button>
 
-      <p class="form-note">
-        Your application will be reviewed by the BuyBridge team. 
-        You will be notified once approved.
-      </p>
+      <p class="form-note">Your application will be reviewed by the BuyBridge team. You will be notified once approved.</p>
     </div>
 
   </main>
 
-  <!-- ==================== SUCCESS MODAL ==================== -->
   <div class="modal-overlay" id="successModal" style="display: none;">
     <div class="modal-card success">
       <div class="success-icon">📬</div>
       <h3 class="modal-title">Application Submitted!</h3>
       <p class="modal-message">Your seller application has been received.</p>
       <p class="modal-message sub">We will review it within 24-48 hours.</p>
-      <a href="../index.html" class="btn-checkout" style="margin-top: 16px; display: block;">
-        Back to Home
-      </a>
+      <a href="../index.html" class="btn-checkout" style="margin-top: 16px; display: block;">Back to Home</a>
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
   <script>
-    function submitApplication() {
+    if (!isLoggedIn() || getUserRole() !== 'seller') {
+      window.location.href = 'login.html';
+    }
+
+    initHeader('Become a Seller', '../index.html');
+
+    const user = getUser();
+    if (user && user.phone) {
+      document.getElementById('businessPhone').value = user.phone;
+    }
+
+    async function submitApplication() {
       const agreed = document.getElementById('agreeSellerTerms').checked;
       if (!agreed) {
-        alert('Please agree to the Seller Terms and Conditions.');
+        showToast('Please agree to the Seller Terms and Conditions', 'warning');
         return;
       }
-      document.getElementById('successModal').style.display = 'flex';
+
+      const businessName = document.getElementById('businessName').value.trim();
+      const businessAddress = document.getElementById('businessAddress').value.trim();
+
+      if (!businessName || !businessAddress) {
+        showToast('Please fill in all required fields', 'warning');
+        return;
+      }
+
+      try {
+        await apiSubmitSellerApplication({
+          business_name: businessName,
+          business_address: businessAddress,
+          business_category: document.getElementById('businessCategory').value || undefined,
+          store_description: document.getElementById('storeDescription').value.trim() || undefined
+        });
+        document.getElementById('successModal').style.display = 'flex';
+      } catch (error) {}
     }
   </script>
 

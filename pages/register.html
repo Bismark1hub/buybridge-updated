@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="header" id="mainHeader"></header>
+
+  <main class="main-content">
+
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Create Account</h1>
+        <p>Join BuyBridge and buy with confidence</p>
+      </div>
+
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="regName" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="regEmail" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" id="regPhone" placeholder="+233 XX XXX XXXX">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="regPassword" placeholder="Min. 6 characters">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">I want to join as</label>
+          <div class="role-selector">
+            <label class="role-option selected" onclick="selectRole('buyer', this)">
+              <input type="radio" name="role" value="buyer" checked>
+              <span class="role-icon">🛍️</span>
+              <span class="role-name">Buyer</span>
+              <span class="role-desc">I want to shop</span>
+            </label>
+            <label class="role-option" onclick="selectRole('seller', this)">
+              <input type="radio" name="role" value="seller">
+              <span class="role-icon">🏪</span>
+              <span class="role-name">Seller</span>
+              <span class="role-desc">I want to sell</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-auth-submit" onclick="handleRegister()">Create Account</button>
+
+        <p class="auth-switch">
+          Already have an account? <a href="login.html">Login here</a>
+        </p>
+      </div>
+
+      <div class="auth-trust">
+        <span class="trust-icon">🛡️</span>
+        <span>Your data is secure with BuyBridge</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    async function checkExistingSession() {
+      if (isLoggedIn()) {
+        try {
+          const data = await apiVerifyToken();
+          if (data && data.user) {
+            window.location.href = '../index.html';
+          }
+        } catch (error) {
+          clearToken();
+        }
+      }
+    }
+
+    initHeader('Register', '../index.html');
+    checkExistingSession();
+
+    let selectedRole = 'buyer';
+
+    function selectRole(role, element) {
+      selectedRole = role;
+      document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    async function handleRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+
+      if (!name || !email || !phone || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast('Password must be at least 6 characters', 'warning');
+        return;
+      }
+
+      try {
+        const data = await apiSignup(email, password, name, phone, selectedRole);
+        
+        setToken(data.token);
+        setUser(data.user);
+        
+        showToast('Account created successfully!', 'success');
+
+        setTimeout(() => {
+          if (selectedRole === 'seller') {
+            window.location.href = 'become-seller.html';
+          } else {
+            window.location.href = '../index.html';
+          }
+        }, 500);
+      } catch (error) {}
+    }
+  </script>
+
+</body>
+</html>

@@ -8,50 +8,27 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <a href="cart.html" class="back-btn">←</a>
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <span class="header-title">Checkout</span>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== CHECKOUT CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Delivery Address -->
     <div class="checkout-section">
       <h3 class="checkout-section-title">📍 Delivery Address</h3>
       <div class="checkout-address">
-        <p>No. 12, Independence Avenue, East Legon, Accra</p>
+        <p id="displayAddress">Loading address...</p>
         <span class="address-badge">Home</span>
       </div>
     </div>
 
-    <!-- Order Items Summary -->
     <div class="checkout-section">
       <h3 class="checkout-section-title">📦 Order Items</h3>
-      <div class="checkout-items">
-        <div class="checkout-item">
-          <span class="checkout-item-name">iPhone 13 Pro - 256GB ×1</span>
-          <span class="checkout-item-price">GHS 8,500</span>
-        </div>
-        <div class="checkout-item">
-          <span class="checkout-item-name">Nike Air Max - Original ×2</span>
-          <span class="checkout-item-price">GHS 2,400</span>
-        </div>
+      <div class="checkout-items" id="checkoutItems">
+        <p style="color: var(--text-light);">Loading items...</p>
       </div>
     </div>
 
-    <!-- Payment Method -->
     <div class="checkout-section">
       <h3 class="checkout-section-title">💳 Payment Method</h3>
-
-      <!-- Mobile Money -->
       <div class="payment-options">
         <label class="payment-option active">
           <input type="radio" name="payment" value="momo" checked>
@@ -62,7 +39,6 @@
           </div>
           <span class="payment-check">✓</span>
         </label>
-
         <label class="payment-option">
           <input type="radio" name="payment" value="card">
           <span class="payment-icon">💳</span>
@@ -73,8 +49,6 @@
           <span class="payment-check">✓</span>
         </label>
       </div>
-
-      <!-- Momo Provider Selection -->
       <div class="momo-providers" id="momoProviders">
         <label class="provider-option selected">
           <input type="radio" name="provider" value="mtn" checked>
@@ -91,26 +65,24 @@
       </div>
     </div>
 
-    <!-- Order Summary -->
     <div class="checkout-section">
       <h3 class="checkout-section-title">📋 Order Summary</h3>
       <div class="summary-rows">
         <div class="summary-row">
-          <span>Subtotal</span>
-          <span>GHS 10,900</span>
+          <span>Subtotal (<span id="itemCount">0</span> items)</span>
+          <span id="subtotal">GHS 0</span>
         </div>
         <div class="summary-row">
           <span>Platform Fee (5%)</span>
-          <span>GHS 545</span>
+          <span id="platformFee">GHS 0</span>
         </div>
         <div class="summary-row total">
           <span>Total</span>
-          <span>GHS 11,445</span>
+          <span id="total">GHS 0</span>
         </div>
       </div>
     </div>
 
-    <!-- Terms -->
     <div class="terms-box">
       <label class="terms-label">
         <input type="checkbox" id="agreeTerms">
@@ -118,7 +90,6 @@
       </label>
     </div>
 
-    <!-- Trust Badge -->
     <div class="trust-badge cart-trust">
       <span class="trust-icon">🛡️</span>
       <div>
@@ -129,18 +100,16 @@
 
   </main>
 
-  <!-- ==================== BOTTOM PAY BUTTON ==================== -->
   <div class="bottom-checkout">
     <div class="checkout-total">
       <span class="checkout-label">Total to Pay</span>
-      <span class="checkout-amount">GHS 11,445</span>
+      <span class="checkout-amount" id="checkoutTotal">GHS 0</span>
     </div>
     <button class="btn-checkout" id="payBtn" onclick="processPayment()">
-      Pay GHS 11,445
+      Pay <span id="payAmount">GHS 0</span>
     </button>
   </div>
 
-  <!-- ==================== PAYMENT PROCESSING MODAL ==================== -->
   <div class="modal-overlay" id="paymentModal" style="display: none;">
     <div class="modal-card">
       <div class="modal-spinner"></div>
@@ -150,61 +119,119 @@
     </div>
   </div>
 
-  <!-- ==================== SUCCESS MODAL ==================== -->
   <div class="modal-overlay" id="successModal" style="display: none;">
     <div class="modal-card success">
       <div class="success-icon">✅</div>
-      <h3 class="modal-title">Payment Successful!</h3>
-      <p class="modal-message">Your payment of GHS 11,445 has been held in escrow.</p>
-      <p class="modal-message sub">The seller will prepare your order now.</p>
-      <a href="order-tracking.html" class="btn-checkout" style="margin-top: 16px; display: block;">
+      <h3 class="modal-title">Order Placed!</h3>
+      <p class="modal-message" id="successMessage">Your order has been placed successfully.</p>
+      <p class="modal-message sub">Funds are held securely in escrow.</p>
+      <a href="order-tracking.html" class="btn-checkout" id="trackOrderBtn" style="margin-top: 16px; display: block;">
         Track Your Order
       </a>
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
   <script>
-    // Toggle payment method
-    document.querySelectorAll('input[name="payment"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('active'));
-        this.closest('.payment-option').classList.add('active');
-        
-        const momoDiv = document.getElementById('momoProviders');
-        if (this.value === 'momo') {
-          momoDiv.style.display = 'block';
-        } else {
-          momoDiv.style.display = 'none';
-        }
-      });
-    });
+    let cart = [];
+    let orderTotal = 0;
+    let createdOrder = null;
 
-    // Toggle provider selection
-    document.querySelectorAll('.provider-option').forEach(opt => {
-      opt.addEventListener('click', function() {
-        document.querySelectorAll('.provider-option').forEach(o => o.classList.remove('selected'));
-        this.classList.add('selected');
-        this.querySelector('input').checked = true;
-      });
-    });
+    initHeader('Checkout', 'cart.html');
 
-    // Process payment
-    function processPayment() {
-      const agreed = document.getElementById('agreeTerms').checked;
-      if (!agreed) {
-        alert('Please agree to the Terms and Conditions to proceed.');
+    if (!isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+
+    function loadCheckout() {
+      cart = JSON.parse(localStorage.getItem('buybridge_cart') || '[]');
+      
+      if (cart.length === 0) {
+        window.location.href = 'cart.html';
         return;
       }
 
-      // Show processing modal
+      const address = localStorage.getItem('buybridge_address') || 'Not set';
+      document.getElementById('displayAddress').textContent = address;
+
+      document.getElementById('checkoutItems').innerHTML = cart.map(item => `
+        <div class="checkout-item">
+          <span class="checkout-item-name">${item.name} ×${item.quantity}</span>
+          <span class="checkout-item-price">GHS ${(item.price * item.quantity).toLocaleString()}</span>
+        </div>
+      `).join('');
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const fee = subtotal * 0.05;
+      orderTotal = subtotal + fee;
+      const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      document.getElementById('itemCount').textContent = itemCount;
+      document.getElementById('subtotal').textContent = `GHS ${subtotal.toLocaleString()}`;
+      document.getElementById('platformFee').textContent = `GHS ${fee.toLocaleString()}`;
+      document.getElementById('total').textContent = `GHS ${orderTotal.toLocaleString()}`;
+      document.getElementById('checkoutTotal').textContent = `GHS ${orderTotal.toLocaleString()}`;
+      document.getElementById('payAmount').textContent = `GHS ${orderTotal.toLocaleString()}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[name="payment"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('active'));
+          this.closest('.payment-option').classList.add('active');
+          document.getElementById('momoProviders').style.display = this.value === 'momo' ? 'block' : 'none';
+        });
+      });
+
+      document.querySelectorAll('.provider-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          document.querySelectorAll('.provider-option').forEach(o => o.classList.remove('selected'));
+          this.classList.add('selected');
+          this.querySelector('input').checked = true;
+        });
+      });
+
+      loadCheckout();
+    });
+
+    async function processPayment() {
+      if (!document.getElementById('agreeTerms').checked) {
+        showToast('Please agree to the Terms and Conditions', 'warning');
+        return;
+      }
+
       document.getElementById('paymentModal').style.display = 'flex';
 
-      // Simulate payment processing (replace with real Moolre API call later)
-      setTimeout(() => {
+      try {
+        if (cart[0] && cart[0].id && cart[0].id !== 'demo') {
+          const orderData = await apiCreateOrder({
+            product_id: cart[0].id,
+            quantity: cart[0].quantity,
+            delivery_address: localStorage.getItem('buybridge_address') || 'Accra'
+          });
+          createdOrder = orderData.order;
+          await apiInitiatePayment(createdOrder.id);
+          await apiVerifyPayment(createdOrder.id);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
         document.getElementById('paymentModal').style.display = 'none';
+        
+        if (createdOrder) {
+          document.getElementById('successMessage').textContent = `Order #${createdOrder.order_number} placed! Funds held in escrow.`;
+          document.getElementById('trackOrderBtn').href = `order-tracking.html?id=${createdOrder.id}`;
+        }
+        
         document.getElementById('successModal').style.display = 'flex';
-      }, 3000);
+        localStorage.removeItem('buybridge_cart');
+      } catch (error) {
+        document.getElementById('paymentModal').style.display = 'none';
+        showToast(error.message || 'Payment failed. Please try again.', 'error');
+      }
     }
   </script>
 

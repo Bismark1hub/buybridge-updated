@@ -8,214 +8,140 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
+  <header class="header" id="mainHeader"></header>
 
-      <!-- Logo Section -->
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-
-      <!-- Search Bar -->
-      <div class="header-search">
-        <input type="text" placeholder="Search products..." class="search-input">
-        <button class="search-btn">🔍</button>
-      </div>
-
-      <!-- Right Actions -->
-      <div class="header-actions">
-        <a href="pages/cart.html" class="cart-btn">
-          🛒
-          <span class="cart-badge">0</span>
-        </a>
-        <button class="profile-btn">👤</button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- ==================== CATEGORIES ROW ==================== -->
   <section class="categories-section">
-    <div class="categories-scroll">
-      <button class="category-chip active">All</button>
-      <button class="category-chip">📱 Electronics</button>
-      <button class="category-chip">👗 Fashion</button>
-      <button class="category-chip">🍕 Food</button>
-      <button class="category-chip">🔧 Services</button>
-      <button class="category-chip">🏠 Home & Living</button>
-      <button class="category-chip">💄 Beauty</button>
-      <button class="category-chip">🏋️ Sports</button>
+    <div class="categories-scroll" id="categoriesContainer">
+      <button class="category-chip active" onclick="filterByCategory('all', this)">All</button>
+      <button class="category-chip" onclick="filterByCategory('electronics', this)">📱 Electronics</button>
+      <button class="category-chip" onclick="filterByCategory('fashion', this)">👗 Fashion</button>
+      <button class="category-chip" onclick="filterByCategory('food', this)">🍕 Food</button>
+      <button class="category-chip" onclick="filterByCategory('services', this)">🔧 Services</button>
+      <button class="category-chip" onclick="filterByCategory('home', this)">🏠 Home & Living</button>
+      <button class="category-chip" onclick="filterByCategory('beauty', this)">💄 Beauty</button>
+      <button class="category-chip" onclick="filterByCategory('sports', this)">🏋️ Sports</button>
     </div>
   </section>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Section Title -->
     <div class="section-header">
       <h2 class="section-title">🔥 Trending Now</h2>
       <a href="#" class="section-link">See All</a>
     </div>
 
-    <!-- Product Grid -->
-    <div class="product-grid">
-
-      <!-- Product Card 1 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">📱</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">iPhone 13 Pro - 256GB</h3>
-          <p class="product-price">GHS 8,500</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.8</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 2 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">👟</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Nike Air Max - Original</h3>
-          <p class="product-price">GHS 1,200</p>
-          <div class="product-meta">
-            <span class="product-seller">Urban Kicks</span>
-            <span class="product-rating">⭐ 4.5</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 3 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">🔧</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">NutriBullet Blender 600W</h3>
-          <p class="product-price">GHS 850</p>
-          <div class="product-meta">
-            <span class="product-seller">Home Essentials</span>
-            <span class="product-rating">⭐ 4.3</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 4 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">💻</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">MacBook Air M1 - 2020</h3>
-          <p class="product-price">GHS 9,800</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.9</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 5 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">💎</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Bleu de Chanel - 100ml</h3>
-          <p class="product-price">GHS 950</p>
-          <div class="product-meta">
-            <span class="product-seller">Luxury Scents</span>
-            <span class="product-rating">⭐ 4.6</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 6 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">🍚</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Electric Rice Cooker 1.8L</h3>
-          <p class="product-price">GHS 320</p>
-          <div class="product-meta">
-            <span class="product-seller">Home Essentials</span>
-            <span class="product-rating">⭐ 4.1</span>
-          </div>
-        </div>
-      </a>
-
+    <div class="product-grid" id="trendingProducts">
+      <p style="text-align: center; color: var(--text-light); padding: 20px;">Loading products...</p>
     </div>
 
-    <!-- Section Title -->
     <div class="section-header">
       <h2 class="section-title">📍 Near You</h2>
       <a href="#" class="section-link">See All</a>
     </div>
 
-    <!-- Product Grid -->
-    <div class="product-grid">
-
-      <!-- Product Card 7 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">🍲</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Party Jollof Rice - Full Pan</h3>
-          <p class="product-price">GHS 250</p>
-          <div class="product-meta">
-            <span class="product-seller">Tasty Meals GH</span>
-            <span class="product-rating">⭐ 4.7</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Product Card 8 -->
-      <a href="pages/product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">📦</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Silicone Phone Case - All Models</h3>
-          <p class="product-price">GHS 45</p>
-          <div class="product-meta">
-            <span class="product-seller">Accra Accessories</span>
-            <span class="product-rating">⭐ 4.2</span>
-          </div>
-        </div>
-      </a>
-
+    <div class="product-grid" id="nearYouProducts">
+      <p style="text-align: center; color: var(--text-light); padding: 20px;">Loading products...</p>
     </div>
 
   </main>
 
-  <!-- ==================== BOTTOM NAVIGATION ==================== -->
-  <nav class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Home</span>
-    </a>
-    <a href="#" class="nav-item">
-      <span class="nav-icon">🔍</span>
-      <span class="nav-label">Search</span>
-    </a>
-    <a href="pages/order-tracking.html" class="nav-item">
-      <span class="nav-icon">📋</span>
-      <span class="nav-label">Orders</span>
-    </a>
-    <a href="#" class="nav-item">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label">Profile</span>
-    </a>
-  </nav>
+  <div id="bottomNav"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script>
+    let currentCategory = 'all';
+    let allProducts = [];
+
+    initHeader(null, null);
+    document.getElementById('bottomNav').innerHTML = getBuyerBottomNav('home');
+
+    async function loadProducts() {
+      try {
+        const data = await apiListProducts();
+        allProducts = data.products || [];
+        displayProducts(allProducts, 'trendingProducts');
+        displayProducts(allProducts.slice(0, 4), 'nearYouProducts');
+      } catch (error) {
+        showPlaceholderProducts();
+      }
+    }
+
+    function displayProducts(products, containerId) {
+      const container = document.getElementById(containerId);
+      
+      if (!products || products.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 20px;">No products found</p>';
+        return;
+      }
+
+      container.innerHTML = products.map(product => `
+        <a href="pages/product-detail.html?id=${product.id}" class="product-card">
+          <div class="product-image">
+            ${product.image_url 
+              ? `<img src="${product.image_url}" alt="${product.name}">`
+              : `<div class="image-placeholder">📦</div>`
+            }
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">${product.name}</h3>
+            <p class="product-price">GHS ${parseFloat(product.price).toLocaleString()}</p>
+            <div class="product-meta">
+              <span class="product-seller">${product.seller_name || 'Unknown Seller'}</span>
+              <span class="product-rating">⭐ ${product.rating || 'New'}</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function showPlaceholderProducts() {
+      const placeholders = [
+        { name: 'iPhone 13 Pro - 256GB', price: '8,500', seller: 'TechHub Ghana', rating: '4.8', emoji: '📱' },
+        { name: 'Nike Air Max - Original', price: '1,200', seller: 'Urban Kicks', rating: '4.5', emoji: '👟' },
+        { name: 'NutriBullet Blender 600W', price: '850', seller: 'Home Essentials', rating: '4.3', emoji: '🔧' },
+        { name: 'MacBook Air M1 - 2020', price: '9,800', seller: 'TechHub Ghana', rating: '4.9', emoji: '💻' },
+        { name: 'Bleu de Chanel - 100ml', price: '950', seller: 'Luxury Scents', rating: '4.6', emoji: '💎' },
+        { name: 'Electric Rice Cooker 1.8L', price: '320', seller: 'Home Essentials', rating: '4.1', emoji: '🍚' },
+        { name: 'Party Jollof Rice - Full Pan', price: '250', seller: 'Tasty Meals GH', rating: '4.7', emoji: '🍲' },
+        { name: 'Silicone Phone Case', price: '45', seller: 'Accra Accessories', rating: '4.2', emoji: '📦' }
+      ];
+
+      const html = placeholders.map(p => `
+        <a href="pages/product-detail.html" class="product-card">
+          <div class="product-image"><div class="image-placeholder">${p.emoji}</div></div>
+          <div class="product-info">
+            <h3 class="product-name">${p.name}</h3>
+            <p class="product-price">GHS ${p.price}</p>
+            <div class="product-meta">
+              <span class="product-seller">${p.seller}</span>
+              <span class="product-rating">⭐ ${p.rating}</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+
+      document.getElementById('trendingProducts').innerHTML = html;
+      document.getElementById('nearYouProducts').innerHTML = html.slice(0, 4);
+    }
+
+    function filterByCategory(category, element) {
+      currentCategory = category;
+      document.querySelectorAll('.category-chip').forEach(chip => chip.classList.remove('active'));
+      element.classList.add('active');
+
+      if (category === 'all') {
+        displayProducts(allProducts, 'trendingProducts');
+      } else {
+        const filtered = allProducts.filter(p => p.category === category);
+        displayProducts(filtered, 'trendingProducts');
+      }
+    }
+
+    loadProducts();
+  </script>
 
 </body>
 </html>

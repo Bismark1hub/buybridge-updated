@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="header" id="mainHeader"></header>
+
+  <main class="main-content">
+
+    <div class="dashboard-tabs" style="margin: 12px -16px;">
+      <button class="tab-btn active" onclick="filterNotifs('all', this)">All</button>
+      <button class="tab-btn" onclick="filterNotifs('unread', this)">Unread</button>
+    </div>
+
+    <div id="notificationsList">
+      <p style="text-align: center; color: var(--text-light); padding: 40px;">Loading notifications...</p>
+    </div>
+
+    <div class="pagination" id="pagination" style="display: none;"></div>
+
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    if (!isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+
+    initHeader('Notifications', null);
+
+    let currentPage = 1;
+    let totalPages = 1;
+    let currentFilter = 'all';
+
+    async function loadNotifications(page = 1) {
+      try {
+        const params = { page };
+        if (currentFilter === 'unread') params.unread_only = true;
+
+        const data = await apiListNotifications(params);
+        const notifications = data.notifications || [];
+        currentPage = data.page || 1;
+        totalPages = data.totalPages || 1;
+
+        displayNotifications(notifications);
+        renderPagination();
+      } catch (error) {
+        document.getElementById('notificationsList').innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <p style="font-size: 48px;">🔔</p>
+            <p style="color: var(--text-light);">No notifications</p>
+          </div>
+        `;
+      }
+    }
+
+    function displayNotifications(notifications) {
+      if (notifications.length === 0) {
+        document.getElementById('notificationsList').innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <p style="font-size: 48px;">🔔</p>
+            <p style="color: var(--text-light);">No notifications</p>
+          </div>
+        `;
+        return;
+      }
+
+      document.getElementById('notificationsList').innerHTML = notifications.map(n => `
+        <div class="notification-item ${n.read ? '' : 'unread'}" onclick="markRead('${n.id}')">
+          <div class="notification-icon">${getNotifIcon(n.type)}</div>
+          <div class="notification-content">
+            <span class="notification-title">${n.title}</span>
+            <span class="notification-message">${n.message}</span>
+            <span class="notification-time">${new Date(n.created_at).toLocaleString()}</span>
+          </div>
+          ${!n.read ? '<span class="unread-dot"></span>' : ''}
+        </div>
+      `).join('');
+    }
+
+    function getNotifIcon(type) {
+      const icons = {
+        order_placed: '📦',
+        payment_received: '💰',
+        order_shipped: '🚚',
+        delivery_confirmed: '✅',
+        dispute_filed: '⚠️'
+      };
+      return icons[type] || '🔔';
+    }
+
+    function renderPagination() {
+      const pagDiv = document.getElementById('pagination');
+      if (totalPages <= 1) {
+        pagDiv.style.display = 'none';
+        return;
+      }
+
+      pagDiv.style.display = 'flex';
+      let html = '';
+      
+      if (currentPage > 1) {
+        html += `<button class="page-btn" onclick="loadNotifications(${currentPage - 1})">← Prev</button>`;
+      }
+      
+      html += `<span class="page-info">Page ${currentPage} of ${totalPages}</span>`;
+      
+      if (currentPage < totalPages) {
+        html += `<button class="page-btn" onclick="loadNotifications(${currentPage + 1})">Next →</button>`;
+      }
+      
+      pagDiv.innerHTML = html;
+    }
+
+    async function markRead(notifId) {
+      try {
+        await apiMarkNotificationRead({ notificationId: notifId });
+        loadNotifications(currentPage);
+      } catch (error) {}
+    }
+
+    function filterNotifs(filter, element) {
+      currentFilter = filter;
+      currentPage = 1;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      loadNotifications();
+    }
+
+    loadNotifications();
+  </script>
+
+</body>
+</html>

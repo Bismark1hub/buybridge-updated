@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BuyBridge</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="header" id="mainHeader"></header>
+
+  <main class="main-content">
+
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Login to your BuyBridge account</p>
+      </div>
+
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
+        </div>
+
+        <button class="btn-auth-submit" onclick="handleLogin()">Login</button>
+
+        <p class="auth-switch">
+          Don't have an account? <a href="register.html">Register here</a>
+        </p>
+
+        <p class="auth-forgot">
+          <a href="#" onclick="showToast('Password reset coming soon', 'info')">Forgot password?</a>
+        </p>
+      </div>
+
+      <div class="auth-trust">
+        <span class="trust-icon">🛡️</span>
+        <span>Secure login protected by BuyBridge</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    // Only redirect if user has a valid session
+    async function checkExistingSession() {
+      if (isLoggedIn()) {
+        try {
+          const data = await apiVerifyToken();
+          if (data && data.user) {
+            setUser(data.user);
+            const role = data.user.role;
+            if (role === 'admin') {
+              window.location.href = 'admin-dashboard.html';
+            } else if (role === 'seller') {
+              window.location.href = 'seller-dashboard.html';
+            } else {
+              window.location.href = '../index.html';
+            }
+          }
+        } catch (error) {
+          clearToken();
+        }
+      }
+    }
+
+    initHeader('Login', '../index.html');
+    checkExistingSession();
+
+    async function handleLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      try {
+        const data = await apiLogin(email, password);
+        
+        setToken(data.token);
+        setUser(data.user);
+        
+        showToast('Login successful!', 'success');
+
+        setTimeout(() => {
+          const role = data.user.role;
+          if (role === 'admin') {
+            window.location.href = 'admin-dashboard.html';
+          } else if (role === 'seller') {
+            window.location.href = 'seller-dashboard.html';
+          } else {
+            window.location.href = '../index.html';
+          }
+        }, 500);
+      } catch (error) {}
+    }
+  </script>
+
+</body>
+</html>

@@ -3,152 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechHub Ghana - BuyBridge</title>
+  <title>Store - BuyBridge</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <a href="product-detail.html" class="back-btn">←</a>
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <div class="header-actions">
-        <a href="cart.html" class="cart-btn">
-          🛒
-          <span class="cart-badge">0</span>
-        </a>
-      </div>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== STOREFRONT CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Cover Banner -->
     <div class="storefront-cover">
-      <div class="cover-placeholder">TechHub Ghana</div>
+      <div class="cover-placeholder" id="coverName">Store</div>
     </div>
 
-    <!-- Store Info -->
     <div class="storefront-info">
       <div class="storefront-avatar">🏪</div>
       <div class="storefront-details">
-        <h1 class="storefront-name">
-          TechHub Ghana
-          <span class="verified-badge">✓ Verified</span>
+        <h1 class="storefront-name" id="sfName">
+          Loading...
+          <span class="verified-badge" id="verifiedBadge" style="display:none;">✓ Verified</span>
         </h1>
-        <div class="storefront-rating">⭐ 4.8 (120 reviews)</div>
-        <p class="storefront-desc">
-          Your trusted source for premium electronics in Accra. 
-          All products come with warranty and BuyBridge escrow protection.
-        </p>
+        <div class="storefront-rating" id="sfRating">⭐ --</div>
+        <p class="storefront-desc" id="sfDesc">Loading store information...</p>
         <div class="storefront-meta">
-          <span>📍 Accra, East Legon</span>
-          <span>📦 48 Orders Completed</span>
+          <span id="sfAddress">📍 --</span>
         </div>
       </div>
     </div>
 
-    <!-- Contact Button -->
     <button class="btn-contact-seller">💬 Contact Seller</button>
 
-    <!-- Products Grid -->
     <div class="section-header">
       <h2 class="section-title">All Products</h2>
-      <span class="section-link">15 products</span>
+      <span class="section-link" id="productCount">--</span>
     </div>
 
-    <div class="product-grid">
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">📱</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">iPhone 13 Pro - 256GB</h3>
-          <p class="product-price">GHS 8,500</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.8</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">💻</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">MacBook Air M1 - 2020</h3>
-          <p class="product-price">GHS 9,800</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.9</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">🎧</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">AirPods Pro</h3>
-          <p class="product-price">GHS 1,500</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.7</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">📱</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">iPhone 12 - 128GB</h3>
-          <p class="product-price">GHS 6,200</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.6</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">⌚</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">Apple Watch SE</h3>
-          <p class="product-price">GHS 2,100</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.5</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="product-detail.html" class="product-card">
-        <div class="product-image">
-          <div class="image-placeholder">🔌</div>
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">USB-C Fast Charger 20W</h3>
-          <p class="product-price">GHS 180</p>
-          <div class="product-meta">
-            <span class="product-seller">TechHub Ghana</span>
-            <span class="product-rating">⭐ 4.4</span>
-          </div>
-        </div>
-      </a>
+    <div class="product-grid" id="storeProducts">
+      <p style="text-align: center; color: var(--text-light); padding: 20px;">Loading products...</p>
     </div>
 
-    <!-- Footer -->
     <div class="storefront-footer">
       <span>Powered by</span>
       <span class="footer-brand">🌉 BuyBridge</span>
@@ -156,6 +49,66 @@
     </div>
 
   </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const sellerId = urlParams.get('user_id');
+
+    initHeader(null, '../index.html');
+
+    async function loadStorefront() {
+      if (!sellerId) {
+        showToast('Store not found', 'error');
+        return;
+      }
+
+      try {
+        const profileData = await apiGetSellerProfile(sellerId);
+        const profile = profileData.profile;
+
+        document.getElementById('coverName').textContent = profile.business_name;
+        document.getElementById('sfName').innerHTML = `${profile.business_name} <span class="verified-badge">✓ Verified</span>`;
+        document.getElementById('sfDesc').textContent = profile.store_description || 'No description available.';
+        document.getElementById('sfAddress').textContent = `📍 ${profile.business_address || 'Ghana'}`;
+        document.getElementById('sfRating').textContent = `⭐ ${profile.rating || 'New'}`;
+
+        document.title = `${profile.business_name} - BuyBridge`;
+
+        // Load seller's products
+        const productsData = await apiListProducts();
+        const sellerProducts = (productsData.products || []).filter(p => p.seller_id === sellerId);
+        document.getElementById('productCount').textContent = `${sellerProducts.length} products`;
+
+        document.getElementById('storeProducts').innerHTML = sellerProducts.length === 0
+          ? '<p style="text-align: center; color: var(--text-light); padding: 20px;">No products yet.</p>'
+          : sellerProducts.map(p => `
+            <a href="product-detail.html?id=${p.id}" class="product-card">
+              <div class="product-image">
+                ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}">` : '<div class="image-placeholder">📦</div>'}
+              </div>
+              <div class="product-info">
+                <h3 class="product-name">${p.name}</h3>
+                <p class="product-price">GHS ${parseFloat(p.price).toLocaleString()}</p>
+                <div class="product-meta">
+                  <span class="product-seller">${profile.business_name}</span>
+                  <span class="product-rating">⭐ ${p.rating || 'New'}</span>
+                </div>
+              </div>
+            </a>
+          `).join('');
+
+      } catch (error) {
+        document.getElementById('sfName').textContent = 'Store Not Available';
+        document.getElementById('sfDesc').textContent = 'This seller\'s storefront isn\'t available.';
+      }
+    }
+
+    loadStorefront();
+  </script>
 
 </body>
 </html>

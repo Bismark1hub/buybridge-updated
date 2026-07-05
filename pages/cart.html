@@ -8,91 +8,40 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-container">
-      <a href="../index.html" class="back-btn">←</a>
-      <div class="header-logo">
-        <span class="logo-icon">🌉</span>
-        <span class="logo-text">BuyBridge</span>
-      </div>
-      <span class="header-title">My Cart</span>
-    </div>
-  </header>
+  <header class="header" id="mainHeader"></header>
 
-  <!-- ==================== CART CONTENT ==================== -->
   <main class="main-content">
 
-    <!-- Cart Items -->
-    <div class="cart-items">
-
-      <!-- Cart Item 1 -->
-      <div class="cart-item">
-        <a href="product-detail.html" class="cart-item-image">
-          <div class="image-placeholder small">📱</div>
-        </a>
-        <div class="cart-item-details">
-          <h3 class="cart-item-name">iPhone 13 Pro - 256GB</h3>
-          <p class="cart-item-seller">TechHub Ghana</p>
-          <p class="cart-item-price">GHS 8,500</p>
-          <div class="cart-item-qty">
-            <button class="qty-btn-sm">−</button>
-            <span>1</span>
-            <button class="qty-btn-sm">+</button>
-          </div>
-        </div>
-        <button class="cart-item-remove">🗑️</button>
-      </div>
-
-      <!-- Cart Item 2 -->
-      <div class="cart-item">
-        <a href="product-detail.html" class="cart-item-image">
-          <div class="image-placeholder small">👟</div>
-        </a>
-        <div class="cart-item-details">
-          <h3 class="cart-item-name">Nike Air Max - Original</h3>
-          <p class="cart-item-seller">Urban Kicks</p>
-          <p class="cart-item-price">GHS 1,200</p>
-          <div class="cart-item-qty">
-            <button class="qty-btn-sm">−</button>
-            <span>2</span>
-            <button class="qty-btn-sm">+</button>
-          </div>
-        </div>
-        <button class="cart-item-remove">🗑️</button>
-      </div>
-
+    <div class="cart-items" id="cartItems">
+      <p style="text-align: center; color: var(--text-light); padding: 40px;">Your cart is empty</p>
     </div>
 
-    <!-- Delivery Address -->
-    <div class="cart-section">
+    <div class="cart-section" id="addressSection" style="display: none;">
       <h3 class="cart-section-title">📍 Delivery Address</h3>
       <div class="address-box">
-        <p class="address-text">No. 12, Independence Avenue, East Legon, Accra</p>
-        <button class="address-change-btn">Change</button>
+        <input type="text" class="form-input" id="deliveryAddress" placeholder="Enter your delivery address" style="flex:1;">
+        <button class="address-change-btn" onclick="saveAddress()">Save</button>
       </div>
     </div>
 
-    <!-- Order Summary -->
-    <div class="cart-section">
+    <div class="cart-section" id="summarySection" style="display: none;">
       <h3 class="cart-section-title">Order Summary</h3>
       <div class="summary-rows">
         <div class="summary-row">
-          <span>Subtotal (3 items)</span>
-          <span>GHS 10,900</span>
+          <span>Subtotal (<span id="itemCount">0</span> items)</span>
+          <span id="subtotal">GHS 0</span>
         </div>
         <div class="summary-row">
           <span>Platform Fee (5%)</span>
-          <span>GHS 545</span>
+          <span id="platformFee">GHS 0</span>
         </div>
         <div class="summary-row total">
           <span>Total</span>
-          <span>GHS 11,445</span>
+          <span id="total">GHS 0</span>
         </div>
       </div>
     </div>
 
-    <!-- Trust Badge -->
     <div class="trust-badge cart-trust">
       <span class="trust-icon">🛡️</span>
       <span>Your payment is secure with BuyBridge escrow</span>
@@ -100,14 +49,113 @@
 
   </main>
 
-  <!-- ==================== BOTTOM CHECKOUT ==================== -->
-  <div class="bottom-checkout">
+  <div class="bottom-checkout" id="checkoutBar" style="display: none;">
     <div class="checkout-total">
       <span class="checkout-label">Total</span>
-      <span class="checkout-amount">GHS 11,445</span>
+      <span class="checkout-amount" id="checkoutTotal">GHS 0</span>
     </div>
-    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+    <button class="btn-checkout" onclick="proceedToCheckout()">Proceed to Checkout</button>
   </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    let cart = [];
+
+    initHeader('My Cart', '../index.html');
+    updateAllCartBadges();
+
+    function loadCart() {
+      cart = JSON.parse(localStorage.getItem('buybridge_cart') || '[]');
+      
+      if (cart.length === 0) {
+        document.getElementById('cartItems').innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 40px;">🛒 Your cart is empty</p>';
+        return;
+      }
+
+      document.getElementById('addressSection').style.display = 'block';
+      document.getElementById('summarySection').style.display = 'block';
+      document.getElementById('checkoutBar').style.display = 'flex';
+
+      document.getElementById('cartItems').innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <div class="cart-item-image"><div class="image-placeholder small">📦</div></div>
+          <div class="cart-item-details">
+            <h3 class="cart-item-name">${item.name}</h3>
+            <p class="cart-item-price">GHS ${parseFloat(item.price).toLocaleString()}</p>
+            <div class="cart-item-qty">
+              <button class="qty-btn-sm" onclick="updateQty(${index}, -1)">−</button>
+              <span>${item.quantity}</span>
+              <button class="qty-btn-sm" onclick="updateQty(${index}, 1)">+</button>
+            </div>
+          </div>
+          <button class="cart-item-remove" onclick="removeItem(${index})">🗑️</button>
+        </div>
+      `).join('');
+
+      const savedAddress = localStorage.getItem('buybridge_address');
+      if (savedAddress) {
+        document.getElementById('deliveryAddress').value = savedAddress;
+      }
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const fee = subtotal * 0.05;
+      const total = subtotal + fee;
+      const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      document.getElementById('itemCount').textContent = itemCount;
+      document.getElementById('subtotal').textContent = `GHS ${subtotal.toLocaleString()}`;
+      document.getElementById('platformFee').textContent = `GHS ${fee.toLocaleString()}`;
+      document.getElementById('total').textContent = `GHS ${total.toLocaleString()}`;
+      document.getElementById('checkoutTotal').textContent = `GHS ${total.toLocaleString()}`;
+    }
+
+    function updateQty(index, change) {
+      cart[index].quantity = Math.max(1, cart[index].quantity + change);
+      localStorage.setItem('buybridge_cart', JSON.stringify(cart));
+      loadCart();
+      updateAllCartBadges();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('buybridge_cart', JSON.stringify(cart));
+      loadCart();
+      updateAllCartBadges();
+    }
+
+    function saveAddress() {
+      const address = document.getElementById('deliveryAddress').value.trim();
+      if (address) {
+        localStorage.setItem('buybridge_address', address);
+        showToast('Address saved!', 'success');
+      }
+    }
+
+    function proceedToCheckout() {
+      if (!isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const address = document.getElementById('deliveryAddress').value.trim();
+      if (!address) {
+        showToast('Please enter a delivery address', 'warning');
+        return;
+      }
+
+      localStorage.setItem('buybridge_address', address);
+      window.location.href = 'checkout.html';
+    }
+
+    loadCart();
+  </script>
 
 </body>
 </html>
