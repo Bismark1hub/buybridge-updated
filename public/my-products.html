@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Products — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="dashboard-page">
+    <div class="dashboard-header">
+      <h1>My Products</h1>
+      <a href="add-product.html" class="btn btn-primary">+ Add Product</a>
+    </div>
+    <div id="loading-state"><p>Loading products...</p></div>
+    <div id="empty-state" style="display: none;" class="empty-state">
+      <p>You haven't listed any products yet.</p>
+    </div>
+    <div class="product-grid" id="product-grid" style="display: none;"></div>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/my-products.js"></script>
+</body>
+</html>

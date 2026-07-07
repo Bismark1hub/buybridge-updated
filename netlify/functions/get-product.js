@@ -2,7 +2,8 @@ const { supabase } = require('./utils/supabaseClient');
 const { withErrorHandling } = require('./utils/wrapper');
 
 async function handler(event, context) {
-  const productId = event.queryStringParameters && event.queryStringParameters.id;
+
+  const productId = event.queryStringParameters && event.queryStringParameters.product_id;
 
   if (!productId) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Product id is required' }) };

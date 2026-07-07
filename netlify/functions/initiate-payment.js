@@ -2,6 +2,7 @@ const { getUserFromEvent } = require('./utils/auth');
 const { supabase } = require('./utils/supabaseClient');
 const { withErrorHandling } = require('./utils/wrapper');
 const { parseJsonBody, requireFields } = require('./utils/validation');
+const { initiateCollection } = require('./utils/moolre');
 
 async function handler(event, context) {
   const user = getUserFromEvent(event);
@@ -38,11 +39,27 @@ async function handler(event, context) {
     return { statusCode: 400, body: JSON.stringify({ error: `Order payment status is already '${order.payment_status}'` }) };
   }
 
+  // Fetch the buyer's phone number — Moolre needs this to send the payment prompt
+  const { data: buyer, error: buyerError } = await supabase
+    .from('users')
+    .select('phone')
+    .eq('id', order.buyer_id)
+    .single();
+
+  if (buyerError || !buyer || !buyer.phone) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Buyer phone number not found' }) };
+  }
+
   // ==========================================================
-  // MOOLRE COLLECTIONS API PLACEHOLDER
-  // TODO: Replace with a real call to Moolre's Collections API
+  // MOOLRE COLLECTIONS API (simulated until account is verified)
   // ==========================================================
-  const moolreReference = `MOOLRE-SIM-${Date.now()}`;
+  const collection = await initiateCollection({
+    amount: order.total,
+    phone: buyer.phone,
+    orderId: order.id,
+  });
+
+  const moolreReference = collection.reference;
   const escrow_id = `ESCROW-${order.id}-${Date.now()}`;
 
   const { data: updatedOrder, error: updateError } = await supabase

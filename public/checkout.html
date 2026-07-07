@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main class="checkout-page">
+    <div id="loading-state">
+      <p>Loading order summary...</p>
+    </div>
+
+    <div id="error-state" style="display: none;" class="empty-state">
+      <p>Something went wrong loading this product.</p>
+      <a href="browse.html" class="btn btn-secondary">Back to Browse</a>
+    </div>
+
+    <div id="checkout-content" style="display: none;">
+      <div class="card" id="order-summary">
+        <!-- filled in by checkout.js -->
+      </div>
+
+      <form id="checkout-form" class="card">
+        <label for="delivery_address">Delivery Address</label>
+        <textarea id="delivery_address" required placeholder="e.g. House 12, Adjiringanor Road, East Legon, Accra"></textarea>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-full">
+          Place Order
+        </button>
+      </form>
+
+      <div id="processing-state" style="display: none;">
+        <p id="processing-message">Creating your order...</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

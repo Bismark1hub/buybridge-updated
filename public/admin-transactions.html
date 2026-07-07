@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="dashboard-page">
+    <div class="dashboard-header"><h1>Platform Transactions</h1></div>
+    <div class="filters">
+      <select id="type-filter">
+        <option value="">All Types</option>
+        <option value="payment">Payment</option>
+        <option value="release">Release</option>
+        <option value="refund">Refund</option>
+      </select>
+      <select id="status-filter">
+        <option value="">All Statuses</option>
+        <option value="success">Success</option>
+        <option value="pending">Pending</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
+    <div id="loading-state"><p>Loading transactions...</p></div>
+    <div class="table-wrapper" id="table-wrapper" style="display: none;">
+      <table>
+        <thead><tr><th>Order</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="tx-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/admin-transactions.js"></script>
+</body>
+</html>

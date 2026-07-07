@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Seller — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="auth-page">
+    <form id="seller-form" class="auth-card">
+      <h1>Seller Application</h1>
+      <label for="business_name">Business Name</label>
+      <input type="text" id="business_name" required>
+
+      <label for="business_address">Business Address</label>
+      <input type="text" id="business_address" required>
+
+      <label for="business_category">Business Category</label>
+      <input type="text" id="business_category" required placeholder="e.g. Electronics, Fashion">
+
+      <label for="store_description">Store Description</label>
+      <textarea id="store_description" required></textarea>
+
+      <label for="verification_document_url">Verification Document (URL)</label>
+      <input type="text" id="verification_document_url" required placeholder="Link to ID/business registration doc">
+
+      <button type="submit" class="btn btn-primary btn-full">Submit Application</button>
+    </form>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/become-seller.js"></script>
+</body>
+</html>

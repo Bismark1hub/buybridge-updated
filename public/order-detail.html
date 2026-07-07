@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Detail — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="order-detail-page">
+    <div id="loading-state"><p>Loading order...</p></div>
+    <div id="error-state" style="display: none;" class="empty-state">
+      <p>Order not found or you don't have access to it.</p>
+      <a href="index.html" class="btn btn-secondary">Back Home</a>
+    </div>
+
+    <div id="order-content" style="display: none;">
+      <div class="card">
+        <h1 id="order-number"></h1>
+        <p id="order-total"></p>
+        <div class="order-timeline" id="order-timeline"></div>
+      </div>
+
+      <div class="card" id="otp-section" style="display: none;">
+        <h2>Confirm Delivery</h2>
+        <p>Enter the OTP code sent to your phone to confirm you've received the item.</p>
+        <label for="otp_code">OTP Code</label>
+        <input type="text" id="otp_code" maxlength="6" placeholder="6-digit code">
+        <button id="confirm-delivery-btn" class="btn btn-primary">Confirm Delivery</button>
+      </div>
+
+      <div class="card" id="send-otp-section" style="display: none;">
+        <h2>Delivery Confirmation</h2>
+        <p>Once you've delivered the item, send the OTP code to the buyer.</p>
+        <button id="send-otp-btn" class="btn btn-primary">Send OTP to Buyer</button>
+      </div>
+
+      <div class="card" id="cancel-section" style="display: none;">
+        <button id="cancel-order-btn" class="btn btn-danger">Cancel Order</button>
+      </div>
+
+      <div class="card" id="dispute-section" style="display: none;">
+        <h2>Raise a Dispute</h2>
+        <form id="dispute-form">
+          <label for="issue_type">Issue Type</label>
+          <select id="issue_type" required>
+            <option value="item_not_received">Item not received</option>
+            <option value="item_not_as_described">Item not as described</option>
+            <option value="damaged_item">Damaged item</option>
+            <option value="seller_unresponsive">Seller unresponsive</option>
+            <option value="other">Other</option>
+          </select>
+          <label for="description">Description</label>
+          <textarea id="description" required placeholder="Describe the issue..."></textarea>
+          <button type="submit" class="btn btn-secondary">Submit Dispute</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/order-detail.js"></script>
+</body>
+</html>

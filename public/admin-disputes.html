@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disputes — BuyBridge</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="dashboard-page">
+    <div class="dashboard-header"><h1>Disputes</h1></div>
+    <div id="loading-state"><p>Loading disputes...</p></div>
+    <div id="empty-state" style="display: none;" class="empty-state"><p>No disputes to resolve.</p></div>
+    <div id="disputes-list" style="display: none;"></div>
+  </main>
+
+  <div class="modal-overlay" id="resolve-modal" style="display: none;">
+    <div class="modal">
+      <h2>Resolve Dispute</h2>
+      <form id="resolve-form">
+        <input type="hidden" id="dispute_id">
+        <label for="outcome">Outcome</label>
+        <select id="outcome" required>
+          <option value="resolved_buyer">Refund Buyer</option>
+          <option value="resolved_seller">Release Funds to Seller</option>
+        </select>
+        <label for="resolution_notes">Notes</label>
+        <textarea id="resolution_notes" required></textarea>
+        <button type="submit" class="btn btn-primary">Confirm Resolution</button>
+        <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/admin-disputes.js"></script>
+</body>
+</html>

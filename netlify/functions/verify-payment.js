@@ -2,6 +2,7 @@ const { getUserFromEvent } = require('./utils/auth');
 const { supabase } = require('./utils/supabaseClient');
 const { withErrorHandling } = require('./utils/wrapper');
 const { parseJsonBody, requireFields } = require('./utils/validation');
+const { checkCollectionStatus } = require('./utils/moolre');
 
 async function handler(event, context) {
   const user = getUserFromEvent(event);
@@ -44,7 +45,46 @@ async function handler(event, context) {
 
   // ==========================================================
   // MOOLRE COLLECTIONS API PLACEHOLDER — simulate confirmed payment
+// Look up the transaction row to get the Moolre reference we need to check
+  const { data: transaction, error: transactionError } = await supabase
+    .from('transactions')
+    .select('id, moolre_reference, status')
+    .eq('order_id', order.id)
+    .eq('type', 'escrow_hold')
+    .single();
+
+  if (transactionError || !transaction) {
+    return { statusCode: 404, body: JSON.stringify({ error: 'No pending transaction found for this order' }) };
+  }
+
   // ==========================================================
+  // MOOLRE COLLECTIONS API (simulated until account is verified)
+  // ==========================================================
+  const collectionStatus = await checkCollectionStatus({
+    reference: transaction.moolre_reference,
+  });
+
+  if (collectionStatus.status === 'pending') {
+    // Payment hasn't been approved by the buyer yet — tell the frontend to keep polling
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ status: 'pending', message: 'Waiting for buyer to approve payment' }),
+    };
+  }
+
+  if (collectionStatus.status === 'failed') {
+    await supabase
+      .from('transactions')
+      .update({ status: 'failed' })
+      .eq('id', transaction.id);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ status: 'failed', message: 'Payment failed or was declined' }),
+    };
+  }
+
+  // Status is 'success' — proceed to mark the order as paid
   const { data: updatedOrder, error: updateError } = await supabase
     .from('orders')
     .update({ payment_status: 'escrowed', status: 'paid' })
@@ -59,8 +99,7 @@ async function handler(event, context) {
   await supabase
     .from('transactions')
     .update({ status: 'success' })
-    .eq('order_id', order.id)
-    .eq('type', 'escrow_hold');
+    .eq('id', transaction.id);
 
   const { data: orderWithProduct } = await supabase
     .from('orders')
@@ -97,9 +136,9 @@ async function handler(event, context) {
       },
     ]);
 
-  return {
+ return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Payment confirmed and held in escrow', order: updatedOrder }),
+    body: JSON.stringify({ status: 'success', message: 'Payment confirmed and held in escrow', order: updatedOrder }),
   };
 }
 

@@ -8,39 +8,22 @@ async function handler(event, context) {
     return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  const { as, status, page, limit } = event.queryStringParameters || {};
-  // "as" lets a user viewing both roles specify which side to view — defaults to buyer
-  const viewAs = as === 'seller' ? 'seller_id' : 'buyer_id';
+  const { as } = event.queryStringParameters || {};
+  const role = as === 'seller' ? 'seller' : 'buyer'; // default to buyer if missing/invalid
 
-  const pageNum = parseInt(page) || 1;
-  const pageSize = parseInt(limit) || 20;
-  const from = (pageNum - 1) * pageSize;
-  const to = from + pageSize - 1;
+  const column = role === 'seller' ? 'seller_id' : 'buyer_id';
 
-  let query = supabase
+  const { data: orders, error } = await supabase
     .from('orders')
-    .select('*', { count: 'exact' })
-    .eq(viewAs, user.userId)
-    .range(from, to)
+    .select('*')
+    .eq(column, user.userId)
     .order('created_at', { ascending: false });
 
-  if (status) {
-    query = query.eq('status', status);
-  }
-
-  const { data: orders, error, count } = await query;
-
   if (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to fetch orders', details: error.message }) };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to fetch orders' }) };
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      orders,
-      pagination: { page: pageNum, limit: pageSize, total: count, total_pages: Math.ceil(count / pageSize) },
-    }),
-  };
+  return { statusCode: 200, body: JSON.stringify({ orders }) };
 }
 
 exports.handler = withErrorHandling(handler, ['GET']);
