@@ -171,3 +171,29 @@ form textarea { resize: vertical; min-height: 80px; }
   width: 90%;
   box-shadow: var(--shadow-md);
 }
+/* ===== Password Field with Toggle ===== */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 44px; /* leaves room for the icon so text doesn't overlap it */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password:hover {
+  color: var(--color-primary);
+}

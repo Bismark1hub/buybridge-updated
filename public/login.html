@@ -19,8 +19,11 @@
         <label for="email">Email</label>
         <input type="email" id="email" required>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" required>
+       <label for="password">Password</label>
+<div class="password-field">
+  <input type="password" id="password" required>
+  <button type="button" class="toggle-password"></button>
+</div>
 
         <button type="submit" class="btn btn-primary btn-full">Log In</button>
       </form>
@@ -32,6 +35,7 @@
   <script src="js/toast.js"></script>
   <script src="js/api.js"></script>
   <script src="js/navigation.js"></script>
+  <script src="js/password-toggle.js"></script>
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
