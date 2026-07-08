@@ -57,8 +57,8 @@ function renderProduct(product) {
       `}
     </div>
   `;
-  if (inStock) {
-    document.getElementById('buy-now-btn').addEventListener('click', handleBuyNow);
+ if (inStock) {
+    document.getElementById('buy-now-btn').addEventListener('click', () => handleBuyNow(product));
     document.getElementById('add-to-cart-btn').addEventListener('click', () => handleAddToCart(product));
   }
 }
@@ -82,16 +82,17 @@ function updateCartBadge() {
   badge.style.display = count > 0 ? 'inline-block' : 'none';
 }
 
-function handleBuyNow() {
+function handleBuyNow(product) {
   const quantityInput = document.getElementById('quantity');
   const quantity = parseInt(quantityInput.value, 10);
-
   if (!quantity || quantity < 1) {
     showToast('Please enter a valid quantity', 'error');
     return;
   }
-
-  window.location.href = `checkout.html?product_id=${productId}&quantity=${quantity}`;
+  addToCart(product, quantity);
+  window.location.href = 'checkout.html';
 }
+
+
 
 document.addEventListener('DOMContentLoaded', loadProduct);
