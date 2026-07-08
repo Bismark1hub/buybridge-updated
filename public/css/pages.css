@@ -62,7 +62,6 @@
   margin: var(--space-sm) var(--space-md) 0;
   font-size: 1rem;
   font-weight: 600;
-  /* keeps long product names from wrecking card height */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -115,7 +114,7 @@
   max-width: 120px;
 }
 
-/* ===== Responsive overrides (must stay last — pages.css loads after layout.css) ===== */
+/* ===== Responsive overrides (must stay last) ===== */
 @media (max-width: 768px) {
   .browse-page {
     grid-template-columns: 1fr;
@@ -123,14 +122,8 @@
   .product-detail {
     grid-template-columns: 1fr;
   }
-  .navbar {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .navbar a {
-    flex-shrink: 0;
-    font-size: 0.9rem;
+  main {
+    padding: var(--space-lg) var(--space-md);
   }
   .dashboard-header {
     flex-direction: column;
