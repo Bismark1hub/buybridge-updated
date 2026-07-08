@@ -40,7 +40,7 @@ function renderProduct(product) {
       <p class="product-price">${formatCurrency(product.price)}</p>
       <p class="product-description">${product.description || 'No description provided.'}</p>
       <p class="product-stock">
-        ${inStock ? `${product.quantity_available} in stock` : 'Out of stock'}
+        ${inStock ? (product.quantity_available <= 5 ? `Only ${product.quantity_available} left in stock` : 'In Stock') : 'Out of stock'}
       </p>
 
       ${inStock ? `
