@@ -28,23 +28,6 @@ main {
   font-size: 0.9rem;
 }
 
-/* ===== Browse page layout ===== */
-.browse-page {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: var(--space-xl);
-  align-items: start;
-}
-
-.filters {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-lg);
-  position: sticky;
-  top: var(--space-lg);
-}
-
 /* ===== Dashboard-style layouts (seller/admin) ===== */
 .dashboard-header {
   display: flex;
@@ -82,51 +65,3 @@ th, td {
 }
 
 th { background: var(--color-bg); font-size: 0.85rem; color: var(--color-text-muted); }
-
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .browse-page {
-    grid-template-columns: 1fr;
-  }
-  .navbar {
-    padding: var(--space-md);
-    gap: var(--space-md);
-  }
-  main {
-    padding: var(--space-lg) var(--space-md);
-  }
-}
-
-@media (max-width: 768px) {
-  .browse-page {
-    grid-template-columns: 1fr;
-  }
-  .navbar {
-    padding: var(--space-md);
-    gap: var(--space-md);
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .navbar a {
-    flex-shrink: 0;
-    font-size: 0.9rem;
-  }
-  main {
-    padding: var(--space-lg) var(--space-md);
-  }
-
-  /* Dashboard */
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Product detail */
-  .product-detail {
-    grid-template-columns: 1fr;
-  }
