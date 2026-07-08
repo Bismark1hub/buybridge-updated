@@ -66,6 +66,28 @@ form textarea:focus {
 
 form textarea { resize: vertical; min-height: 80px; }
 
+/* ===== Password Field with Toggle ===== */
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 44px;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+}
+.toggle-password:hover { color: var(--color-primary); }
+
 /* ===== Cards ===== */
 .card {
   background: var(--color-surface);
@@ -92,7 +114,6 @@ form textarea { resize: vertical; min-height: 80px; }
 .badge-disputed, .badge-open { background: #fee2e2; color: #991b1b; }
 .badge-cancelled, .badge-refunded, .badge-rejected, .badge-failed { background: #f1f5f9; color: #475569; }
 
-/* ===== Navbar ===== */
 /* ===== Navbar ===== */
 .navbar {
   position: relative;
@@ -210,7 +231,7 @@ form textarea { resize: vertical; min-height: 80px; }
 .toast-error { background: var(--color-error); }
 .toast-info { background: var(--color-secondary); }
 
-/* ===== Modal (for dispute forms, confirmations, etc.) ===== */
+/* ===== Modal ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -228,30 +249,4 @@ form textarea { resize: vertical; min-height: 80px; }
   max-width: 480px;
   width: 90%;
   box-shadow: var(--shadow-md);
-}
-/* ===== Password Field with Toggle ===== */
-.password-field {
-  position: relative;
-}
-
-.password-field input {
-  padding-right: 44px; /* leaves room for the icon so text doesn't overlap it */
-}
-
-.toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: var(--color-secondary);
-  display: flex;
-  align-items: center;
-}
-
-.toggle-password:hover {
-  color: var(--color-primary);
 }
