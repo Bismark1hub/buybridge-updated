@@ -114,3 +114,29 @@
   margin-bottom: var(--space-lg);
   max-width: 120px;
 }
+
+/* ===== Responsive overrides (must stay last — pages.css loads after layout.css) ===== */
+@media (max-width: 768px) {
+  .browse-page {
+    grid-template-columns: 1fr;
+  }
+  .product-detail {
+    grid-template-columns: 1fr;
+  }
+  .navbar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .navbar a {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
