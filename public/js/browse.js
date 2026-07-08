@@ -1,4 +1,4 @@
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 3;
 let currentPage = 1;
 
 async function loadCategories() {
