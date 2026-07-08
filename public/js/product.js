@@ -43,21 +43,43 @@ function renderProduct(product) {
         ${inStock ? (product.quantity_available <= 5 ? `Only ${product.quantity_available} left in stock` : 'In Stock') : 'Out of stock'}
       </p>
 
-      ${inStock ? `
+   ${inStock ? `
         <div class="quantity-selector">
           <label for="quantity">Quantity</label>
           <input type="number" id="quantity" value="1" min="1" max="${product.quantity_available}">
         </div>
-        <button id="buy-now-btn" class="btn btn-primary btn-full">Buy Now</button>
+        <div class="product-detail-actions">
+          <button id="add-to-cart-btn" class="btn btn-secondary btn-full">Add to Cart</button>
+          <button id="buy-now-btn" class="btn btn-primary btn-full">Buy Now</button>
+        </div>
       ` : `
         <button class="btn btn-secondary btn-full" disabled>Out of Stock</button>
       `}
     </div>
   `;
-
   if (inStock) {
     document.getElementById('buy-now-btn').addEventListener('click', handleBuyNow);
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => handleAddToCart(product));
   }
+}
+
+function handleAddToCart(product) {
+  const quantityInput = document.getElementById('quantity');
+  const quantity = parseInt(quantityInput.value, 10);
+  if (!quantity || quantity < 1) {
+    showToast('Please enter a valid quantity', 'error');
+    return;
+  }
+  addToCart(product, quantity);
+  showToast(`${product.name} added to cart`, 'success');
+  updateCartBadge();
+}
+function updateCartBadge() {
+  const badge = document.getElementById('cart-count');
+  if (!badge) return; // navbar might not have loaded yet, or badge doesn't exist on this page
+  const count = getCartCount();
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline-block' : 'none';
 }
 
 function handleBuyNow() {
