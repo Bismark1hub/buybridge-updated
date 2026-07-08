@@ -168,13 +168,14 @@ function resizeImage(file, maxDimension = 1200, quality = 0.8) {
   });
 }
 async function uploadProductImage(file) {
-  const base64 = await fileToBase64(file);
+  const resizedBlob = await resizeImage(file);
+  const base64 = await fileToBase64(resizedBlob);
 
   const data = await apiRequest('upload-image', 'POST', {
     file_base64: base64,
-    file_name: file.name,
-    file_type: file.type
-  }, true); // true = requires auth, same as create-product
+    file_name: file.name.replace(/\.[^/.]+$/, '.jpg'), // extension now matches the actual JPEG output
+    file_type: 'image/jpeg'
+  }, true);
 
   return data.image_url;
 }
