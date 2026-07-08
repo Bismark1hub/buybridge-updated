@@ -107,9 +107,10 @@ async function handleSubmit(e) {
       createdOrderIds.push(orderId);
     }
 
+   
     clearCart();
     showToast('All orders placed successfully!', 'success');
-    window.location.href = 'buyer-orders.html';
+    window.location.href = 'my-orders.html';
 
   } catch (err) {
     showToast(err.message || 'Something went wrong. Please try again.', 'error');
