@@ -113,7 +113,60 @@ function fileToBase64(file) {
     reader.readAsDataURL(file);
   });
 }
+// Resizes + compresses an image in the browser before upload.
+// Why: sellers uploading photos straight from their phone can be 3-5MB+,
+// which makes every page that shows that image slow to load. Shrinking to
+// a reasonable max size (1200px) and compressing to JPEG at 80% quality
+// cuts most product photos down to a few hundred KB with no visible
+// quality loss on a product listing.
+function resizeImage(file, maxDimension = 1200, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
 
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl); // free memory once the image is loaded
+
+      let { width, height } = img;
+
+      // Only shrink if the image is bigger than maxDimension — never upscale
+      if (width > maxDimension || height > maxDimension) {
+        if (width > height) {
+          height = Math.round((height * maxDimension) / width);
+          width = maxDimension;
+        } else {
+          width = Math.round((width * maxDimension) / height);
+          height = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error('Image compression failed'));
+            return;
+          }
+          resolve(blob);
+        },
+        'image/jpeg',
+        quality
+      );
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error('Failed to load image for resizing'));
+    };
+
+    img.src = objectUrl;
+  });
+}
 async function uploadProductImage(file) {
   const base64 = await fileToBase64(file);
 
