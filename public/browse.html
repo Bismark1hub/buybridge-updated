@@ -21,11 +21,16 @@
       <label for="category">Category</label>
       <select id="category"><option value="">All Categories</option></select>
 
-      <label for="min_price">Min Price</label>
-      <input type="number" id="min_price" min="0">
-
-      <label for="max_price">Max Price</label>
-      <input type="number" id="max_price" min="0">
+<div class="filter-price-row">
+        <div>
+          <label for="min_price">Min Price</label>
+          <input type="number" id="min_price" min="0">
+        </div>
+        <div>
+          <label for="max_price">Max Price</label>
+          <input type="number" id="max_price" min="0">
+        </div>
+      </div>
 
       <button id="apply-filters" class="btn btn-secondary btn-full">Apply Filters</button>
     </aside>
