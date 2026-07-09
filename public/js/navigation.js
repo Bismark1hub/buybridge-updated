@@ -59,4 +59,8 @@ function renderNavbar() {
   const navLinks = document.getElementById('nav-links');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('na
+      navLinks.classList.toggle('nav-links-open');
+    });
+  }
+}
+document.addEventListener('DOMContentLoaded', renderNavbar);
