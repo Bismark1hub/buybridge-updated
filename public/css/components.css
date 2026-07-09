@@ -323,3 +323,9 @@ form textarea { resize: vertical; min-height: 80px; }
   font-size: 14px;
   color: #555;
 }
+/* Landing page nav: links shown inline, no hamburger needed */
+.nav-links-static {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
