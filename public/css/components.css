@@ -205,6 +205,22 @@ form textarea { resize: vertical; min-height: 80px; }
 }
 .nav-cta:hover { background: var(--color-primary-dark); }
 
+/* Landing page nav: links shown inline, no hamburger needed.
+   Overrides the dropdown positioning from .nav-links since there's
+   no hamburger here to anchor a floating panel to. */
+.nav-links-static {
+  display: flex;
+  position: static;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-width: 0;
+}
+
 /* ===== Toast ===== */
 #toast-container {
   position: fixed;
@@ -322,10 +338,4 @@ form textarea { resize: vertical; min-height: 80px; }
 .pagination-label {
   font-size: 14px;
   color: #555;
-}
-/* Landing page nav: links shown inline, no hamburger needed */
-.nav-links-static {
-  display: flex;
-  gap: 20px;
-  align-items: center;
 }
