@@ -10,8 +10,9 @@ function renderNavbar() {
                          window.location.pathname === '/';
   if (isLandingPage) return; // index.html has its own hero/CTA — no shared navbar at all
   const user = getCurrentUser();
-  const isBrowsePage = window.location.pathname.endsWith('/browse.html');
-let links = isBrowsePage ? '' : `<a href="browse.html">Browse</a>`;
+  const isBrowsePage = window.location.pathname.endsWith('/browse.html') ||
+                        window.location.pathname.endsWith('/browse');
+  let links = isBrowsePage ? '' : `<a href="browse.html">Browse</a>`;
   if (!user) {
     links += `<a href="login.html">Log In</a>`;
     links += `<a href="signup.html" class="nav-cta">Sign Up</a>`;
@@ -58,8 +59,4 @@ let links = isBrowsePage ? '' : `<a href="browse.html">Browse</a>`;
   const navLinks = document.getElementById('nav-links');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('nav-links-open');
-    });
-  }
-}
-document.addEventListener('DOMContentLoaded', renderNavbar);
+      navLinks.classList.toggle('na
