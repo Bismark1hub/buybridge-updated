@@ -1,146 +1,341 @@
-const currentUser = requireAuth();
+/* ===== Buttons ===== */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: scale(0.98); }
 
-const params = new URLSearchParams(window.location.search);
-const orderId = params.get('id');
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--color-primary-dark); }
 
-const loadingState = document.getElementById('loading-state');
-const errorState = document.getElementById('error-state');
-const orderContent = document.getElementById('order-content');
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+.btn-secondary:hover { background: var(--color-primary-light); }
 
-let order = null;
-let isBuyer = false;
-let isSeller = false;
+.btn-danger {
+  background: var(--color-error);
+  color: #fff;
+}
+.btn-danger:hover { background: #b91c1c; }
 
-async function loadOrder() {
-  if (!orderId) {
-    showError();
-    return;
-  }
-  try {
-    const data = await apiRequest(`get-order?order_id=${orderId}`, 'GET', null, true);
-    order = data.order;
-    isBuyer = currentUser.id === order.buyer_id;
-    isSeller = currentUser.id === order.seller_id;
-    renderOrder();
-  } catch (err) {
-    showError();
-  }
+.btn-full { width: 100%; }
+.btn-sm { padding: 6px 12px; font-size: 0.875rem; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ===== Forms ===== */
+form label {
+  display: block;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-secondary);
 }
 
-function showError() {
-  loadingState.style.display = 'none';
-  errorState.style.display = 'block';
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
 }
 
-function renderOrder() {
-  loadingState.style.display = 'none';
-  orderContent.style.display = 'block';
-
-  document.getElementById('order-number').textContent = `Order ${order.order_number}`;
-  document.getElementById('order-total').textContent = `Total: ${formatCurrency(order.total)}`;
-  renderTimeline();
-  renderActions();
+form input:focus,
+form select:focus,
+form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
-function renderTimeline() {
-  const steps = ['pending', 'paid', 'delivered', 'completed'];
-  const currentIndex = steps.indexOf(order.status);
+form textarea { resize: vertical; min-height: 80px; }
 
-  document.getElementById('order-timeline').innerHTML = steps.map((step, i) => `
-    <div class="step ${i <= currentIndex ? 'active' : ''}">${step}</div>
-  `).join('') + (order.status === 'disputed' ? `<div class="step active">disputed</div>` : '')
-    + (order.status === 'cancelled' ? `<div class="step active">cancelled</div>` : '');
+/* ===== Password Field with Toggle ===== */
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 44px;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+}
+.toggle-password:hover { color: var(--color-primary); }
+
+/* ===== Cards ===== */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-function renderActions() {
-  const notFinal = order.status !== 'completed' && order.status !== 'cancelled';
+/* ===== Status Badges ===== */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.badge-pending, .badge-unpaid { background: #fef3c7; color: #92400e; }
+.badge-paid, .badge-escrowed { background: #dbeafe; color: #1e40af; }
+.badge-delivered { background: #e0e7ff; color: #3730a3; }
+.badge-completed, .badge-released, .badge-approved, .badge-success { background: #dcfce7; color: #166534; }
+.badge-disputed, .badge-open { background: #fee2e2; color: #991b1b; }
+.badge-cancelled, .badge-refunded, .badge-rejected, .badge-failed { background: #f1f5f9; color: #475569; }
 
-  // Buyer: OTP input to confirm delivery
-  if (isBuyer && order.payment_status === 'escrowed' && !order.otp_verified) {
-    document.getElementById('otp-section').style.display = 'block';
-    document.getElementById('confirm-delivery-btn').addEventListener('click', handleConfirmDelivery);
-  }
-
-  // Seller: send OTP button
-  if (isSeller && order.payment_status === 'escrowed' && !order.otp_verified) {
-    document.getElementById('send-otp-section').style.display = 'block';
-    document.getElementById('send-otp-btn').addEventListener('click', handleSendOtp);
-  }
-
-  // Buyer: cancel button, only if unpaid
-  if (isBuyer && order.payment_status === 'unpaid') {
-    document.getElementById('cancel-section').style.display = 'block';
-    document.getElementById('cancel-order-btn').addEventListener('click', handleCancel);
-  }
-
-  // Either party: raise dispute, if not already final
-  if ((isBuyer || isSeller) && notFinal && order.status !== 'disputed') {
-    document.getElementById('dispute-section').style.display = 'block';
-    document.getElementById('dispute-form').addEventListener('submit', handleDispute);
-  }
+/* ===== Navbar ===== */
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-xl);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
 }
 
-
-async function handleConfirmDelivery() {
-  const otpCode = document.getElementById('otp_code').value.trim();
-  if (!otpCode) {
-    showToast('Enter the OTP code', 'error');
-    return;
-  }
-  try {
-    await apiRequest('verify-otp', 'POST', { order_id: orderId, otp_code: otpCode }, true);
-    showToast('Delivery confirmed! Releasing funds to seller...', 'success');
-
-    await apiRequest('release-funds', 'POST', { order_id: orderId }, true);
-    showToast('Funds released to seller!', 'success');
-
-    location.reload();
-  } catch (err) {
-    showToast(err.message || 'Something went wrong', 'error');
-  }
+.nav-logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-right: auto;
+  text-decoration: none;
 }
 
-async function handleSendOtp() {
-  try {
-    await apiRequest('send-otp', 'POST', { order_id: orderId }, true);
-    showToast('OTP sent to buyer', 'success');
-  } catch (err) {
-    showToast(err.message || 'Failed to send OTP', 'error');
-  }
+.nav-cart {
+  position: relative;
+  display: flex;
+  color: var(--color-secondary);
+}
+.nav-cart:hover { color: var(--color-primary); text-decoration: none; }
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
 }
 
-async function handleCancel() {
-  if (!confirm('Are you sure you want to cancel this order?')) return;
-  try {
-    await apiRequest('cancel-order', 'POST', { order_id: orderId }, true);
-    showToast('Order cancelled', 'success');
-    location.reload();
-  } catch (err) {
-    showToast(err.message || 'Failed to cancel order', 'error');
-  }
+.nav-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-secondary);
+  display: flex;
+  padding: 4px;
+}
+.nav-toggle:hover { color: var(--color-primary); }
+
+.nav-links {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: var(--space-md);
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-sm);
+  min-width: 200px;
+  z-index: 50;
 }
 
-async function handleDispute(e) {
-  e.preventDefault();
-  const issueType = document.getElementById('issue_type').value;
-  const description = document.getElementById('description').value.trim();
-
-  if (!description) {
-    showToast('Please describe the issue', 'error');
-    return;
-  }
-
-  try {
-    await apiRequest('raise-dispute', 'POST', {
-      order_id: orderId,
-      issue_type: issueType,
-      description: description
-    }, true);
-    showToast('Dispute raised', 'success');
-    location.reload();
-  } catch (err) {
-    showToast(err.message || 'Failed to raise dispute', 'error');
-  }
+.nav-links-open {
+  display: flex;
 }
 
-document.addEventListener('DOMContentLoaded', loadOrder);
+.nav-links a {
+  color: var(--color-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+}
+.nav-links a:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav-cta {
+  background: var(--color-primary);
+  color: #fff !important;
+}
+.nav-cta:hover { background: var(--color-primary-dark); }
+
+/* Landing page nav: links shown inline, no hamburger needed.
+   Overrides the dropdown positioning from .nav-links since there's
+   no hamburger here to anchor a floating panel to. */
+.nav-links-static {
+  display: flex;
+  position: static;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-width: 0;
+}
+
+/* ===== Toast ===== */
+#toast-container {
+  position: fixed;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  z-index: 1000;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast-visible { opacity: 1; transform: translateX(0); }
+.toast-success { background: var(--color-success); }
+.toast-error { background: var(--color-error); }
+.toast-info { background: var(--color-secondary); }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 900;
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  max-width: 480px;
+  width: 90%;
+  box-shadow: var(--shadow-md);
+}
+
+/* Site Footer */
+.site-footer {
+  margin-top: auto;
+  padding: 24px 16px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  font-size: 13px;
+  color: #999;
+  margin: 0;
+}
+
+/* Pagination controls */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.pagination-controls button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-label {
+  font-size: 14px;
+  color: #555;
+}
