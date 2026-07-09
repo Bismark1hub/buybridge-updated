@@ -10,7 +10,8 @@ function renderNavbar() {
                          window.location.pathname === '/';
   if (isLandingPage) return; // index.html has its own hero/CTA — no shared navbar at all
   const user = getCurrentUser();
-  let links = `<a href="browse.html">Browse</a>`;
+  const isBrowsePage = window.location.pathname.endsWith('/browse.html');
+let links = isBrowsePage ? '' : `<a href="browse.html">Browse</a>`;
   if (!user) {
     links += `<a href="login.html">Log In</a>`;
     links += `<a href="signup.html" class="nav-cta">Sign Up</a>`;
