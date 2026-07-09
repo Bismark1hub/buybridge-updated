@@ -4,12 +4,16 @@
 // On the landing page (index.html), we skip the cart icon and hamburger —
 // visitors haven't shopped yet, so a cart badge and hidden menu don't help them.
 function renderNavbar() {
+function renderNavbar() {
   const navbarEl = document.getElementById('navbar');
   if (!navbarEl) return;
-
   const isLandingPage = window.location.pathname.endsWith('/index.html') ||
                          window.location.pathname === '/' ||
                          window.location.pathname.endsWith('/');
+  if (isLandingPage) return; // index.html has its own hero/CTA — no shared navbar at all
+  const user = getCurrentUser();
+  let links = `<a href="browse.html">Browse</a>`;
+  if (!user) {
 
   const user = getCurrentUser();
   let links = `<a href="browse.html">Browse</a>`;
